@@ -48,27 +48,10 @@ app.use(express.logger());
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/public/index.html');
 });
-
-io.sockets.on('connection', function (socket) {
-	Hex.find({ }, function (err, hexes){
-			if (err) // TODO handle err
-			console.log("error")
-			else
-			  socket.emit('data', { h: hexes });
-		})
-  
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
-
-app.use(function(err, req, res, next){
-		console.error(err.stack);
-		res.send(500, 'Something broke!');
-	});
-	
+var mapData={};
 var HexSchema = mongoose.Schema({
-		name: String
+		_id: String
+		,name: String
 		,r: Number
 		,q: Number
 		,type: Number
@@ -80,16 +63,62 @@ db.once('open', function callback () {
 	if (!module.parent) {
 	  server.listen(port)
 	}
-	  console.log("open")
-	  
-		
-		// for(i=0;i<10;i++)
-			// for(j=0;j<10;j++)
-			// {
-				// var r= i ;
-				// var q = j - Math.floor(i/2);
-				// var h = new Hex({ name: r+"_"+q, r:r,q:q,type:2 })
-				// h.save();
-			// }
-		
+	console.log("open");
+	generateMap(50,10);
+	// for(h in mapData)
+		// mapData[h].save();
 	});
+
+function generateMap(size,seed){
+	var SimplexNoise = require('simplex-noise'),
+    simplexHeight = new SimplexNoise(Math.random),
+	simplexwater = new SimplexNoise(Math.random);
+    
+	for(i=0;i<size;i++)
+	{
+		for(j=0;j<size;j++)
+		{
+			var r= i ;
+			var q = j - Math.floor(i/2);
+			mapData[r+"_"+q] = new Hex({_id: r+"_"+q, name: r+"_"+q, r:r,q:q,type:2 })
+		}
+	}
+	console.log("initGeneration");
+	var land=0.5;
+	var sea=0.5;
+	var stepMap={};
+	for(h in mapData) {
+		var x = Math.sqrt(3) * (mapData[h].q + mapData[h].r/2);
+		var y = 3/2 * mapData[h].r;
+		e=simplexHeight.noise2D(x, y);
+		// w=simplexwater.noise2D(mapData[h].r, mapData[h].q);
+		stepMap[h]={elevation:e};//, humidity:w};
+	}
+	// for(h in stepMap) {
+		// stepMap[h]={elevation:simplexHeight.noise2D(mapData[h].r, mapData[h].q), humidity:simplexwater.noise2D(mapData[h].r, mapData[h].q)};
+	// }
+	console.log("Finalstep");
+	for(h in mapData) {
+		mapData[h].type=Math.floor(stepMap[h].elevation*10);
+		console.log(mapData[h].type);
+	}
+	console.log("open");
+
+}
+io.set('log level', 1);
+io.sockets.on('connection', function (socket) {
+	// Hex.find({ }, function (err, hexes){
+			// if (err) // TODO handle err
+			// console.log("error")
+			// else
+			  // socket.emit('data', { h: hexes });
+		// })
+	socket.emit('data', { h: mapData });
+
+});
+
+app.use(function(err, req, res, next){
+		console.error(err.stack);
+		res.send(500, 'Something broke!');
+	});
+	

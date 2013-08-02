@@ -14,24 +14,63 @@ d3.hexbin = function() {
 			binsById[id].name = point.name;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
-			switch(point.c){
+			switch(point.type){
 				case 1:
-					binsById[id].fill = "yellow";
+					binsById[id].fill = "#111";
 					break;
 				case 2:
-					binsById[id].fill = "blue";
+					binsById[id].fill = "#222";
 					break;
 				case 3:
-					binsById[id].fill = "green";
+					binsById[id].fill = "#333";
 					break;
 				case 4:
-					binsById[id].fill = "gray";
+					binsById[id].fill = "#444";
 					break;
 				case 5:
-					binsById[id].fill = "white";
+					binsById[id].fill = "#555";
+					break;
+				case 6:
+					binsById[id].fill = "#666";
+					break;
+				case 7:
+					binsById[id].fill = "#777";
+					break;
+				case 8:
+					binsById[id].fill = "#888";
+					break;
+				case 9:
+					binsById[id].fill = "#999";
+					break;
+				case -1:
+					binsById[id].fill = "#010";
+					break;
+				case -2:
+					binsById[id].fill = "#020";
+					break;
+				case -3:
+					binsById[id].fill = "#030";
+					break;
+				case -4:
+					binsById[id].fill = "#040";
+					break;
+				case -5:
+					binsById[id].fill = "#050";
+					break;
+				case -6:
+					binsById[id].fill = "#060";
+					break;
+				case -7:
+					binsById[id].fill = "#070";
+					break;
+				case -8:
+					binsById[id].fill = "#080";
+					break;
+				case -9:
+					binsById[id].fill = "#090";
 					break;
 				default:
-					binsById[id].fill = "black";
+					binsById[id].fill = "#FFF";
 			}
 		});
 		return d3.values(binsById);

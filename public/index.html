@@ -22,14 +22,14 @@
 			width = 960 - margin.left - margin.right,
 			height = 500 - margin.top - margin.bottom;
 
-			var points =  data.h;
+			var points = [];
 			
-			var length = points.length,
-			element = null;
-			for (var i = 0; i < length; i++) {
-			  points[i].c=Math.floor((Math.random()*5)+1);
-			}
-			var radius = 40;
+			
+			var i=0;
+			for (hex in data.h) 
+			  points[i++]=data.h[hex];
+			
+			var radius = 10;
 
 			var hexbin = d3.hexbin()
 				.size([width, height])
@@ -47,13 +47,12 @@
 			  .enter().append("path")
 				.attr("class", "hexagon")
 				.attr("d", function(d) { return hexbin.hexagon(); })
-				.attr("transform", function(d) { return "translate("+ (200+ d.x) + ","+ (200+ d.y) + ")"; })
+				.attr("transform", function(d) { return "translate("+ (10+ d.x) + ","+ (10+ d.y) + ")"; })
 				.on("mouseover", function(d){d3.select(this).style("fill", "black");})
 				.on("mouseout", function(d){d3.select(this).style("fill", d.fill);});
 				d3.selectAll('path')
 				.attr('fill', function(d){return d.fill;})
 				.on("click", function(d){alert(d.name);});
-			socket.emit('my other event', { my: 'data' });
 		  });
 		</script>
 	</head>
