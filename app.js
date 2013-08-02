@@ -4,36 +4,6 @@
 	// , io = require('socket.io').listen(server);
 	// var path = require('path')
 	// , port = process.env.PORT || 3000;
-	// // var mongoose = require('mongoose');
-	// // mongoose.connect('mongodb://localhost/test');
-	// // var db = mongoose.connection;
-	// // db.on('error', console.error.bind(console, 'connection error:'));
-	// // db.once('open', function callback () {
-	  // // console.log("open")
-	  // // var HexSchema = mongoose.Schema({
-		// // name: String
-		// // ,r: Number
-		// // ,q: Number
-		// // ,type: Number
-		// // })
-		
-		// // var Hex = mongoose.model('Hex', HexSchema)
-		
-		// // for(i=0;i<10;i++)
-			// // for(j=0;j<10;j++)
-			// // {
-				// // var r= i ;
-				// // var q = j - Math.floor(i/2);
-				// // var h = new Hex({ name: r+"_"+q, r:r,q:q,type:2 })
-				// // h.save();
-			// // }
-		// // Hex.find({ }, function (err, kittens){
-		// // if (err) // TODO handle err
-		// // console.log("error")
-		// // else
-		  // // console.log("chat"+kittens)
-		// // })
-	// // });
 
 // // New call to compress content
 // app.configure(function() {
@@ -58,30 +28,68 @@
 	// this.use(express.bodyParser());
 // });
 
-// if (!module.parent) {
-  // app.listen(port)
-// }
 
-// io.sockets.on('connection', function (socket) {
-  // socket.emit('news', { hello: 'world' });
-  // socket.on('my other event', function (data) {
-    // console.log(data);
-  // });
-// });
 
-var app = require('express')()
-  , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server);
+var   express = require('express')
+	, app = express()
+	, server = require('http').createServer(app)
+	, io = require('socket.io').listen(server)
+	// , path = require('path')
+	, port = process.env.PORT || 3000;
+	
+var mongoose = require('mongoose');
+	mongoose.connect('mongodb://localhost/test');
+	var db = mongoose.connection;
+	
 
-server.listen(3000);
 
+app.use(express.static(__dirname + '/public'));
+app.use(express.logger());
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.sendfile(__dirname + '/public/index.html');
 });
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+	Hex.find({ }, function (err, hexes){
+			if (err) // TODO handle err
+			console.log("error")
+			else
+			  socket.emit('data', { h: hexes });
+		})
+  
   socket.on('my other event', function (data) {
     console.log(data);
   });
 });
+
+app.use(function(err, req, res, next){
+		console.error(err.stack);
+		res.send(500, 'Something broke!');
+	});
+	
+var HexSchema = mongoose.Schema({
+		name: String
+		,r: Number
+		,q: Number
+		,type: Number
+		})
+		
+		var Hex = mongoose.model('Hex', HexSchema)
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+	if (!module.parent) {
+	  server.listen(port)
+	}
+	  console.log("open")
+	  
+		
+		// for(i=0;i<10;i++)
+			// for(j=0;j<10;j++)
+			// {
+				// var r= i ;
+				// var q = j - Math.floor(i/2);
+				// var h = new Hex({ name: r+"_"+q, r:r,q:q,type:2 })
+				// h.save();
+			// }
+		
+	});

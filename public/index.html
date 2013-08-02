@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<style>
+
+		
+		.hexagon {
+		  
+		  stroke: #000;
+		  stroke-width: 1px;
+		}
+
+		</style>
+		<script src="d3.v3.min.js"></script>
+		<script src="myHex.js"></script>
+		<script src="socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io.connect('http://localhost:3000');
+		  socket.on('data', function (data) {
+			var margin = {top: 20, right: 20, bottom: 30, left: 40},
+			width = 960 - margin.left - margin.right,
+			height = 500 - margin.top - margin.bottom;
+
+			var points =  data.h;
+			
+			var length = points.length,
+			element = null;
+			for (var i = 0; i < length; i++) {
+			  points[i].c=Math.floor((Math.random()*5)+1);
+			}
+			var radius = 40;
+
+			var hexbin = d3.hexbin()
+				.size([width, height])
+				.radius(radius);
+
+			var svg = d3.select("body").append("svg")
+				.attr("width", "100%")
+				.attr("height", "100%")
+			  .append("g")
+				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			svg.append("g")
+				.selectAll(".hexagon")
+				.data(hexbin(points))
+			  .enter().append("path")
+				.attr("class", "hexagon")
+				.attr("d", function(d) { return hexbin.hexagon(); })
+				.attr("transform", function(d) { return "translate("+ (200+ d.x) + ","+ (200+ d.y) + ")"; })
+				.on("mouseover", function(d){d3.select(this).style("fill", "black");})
+				.on("mouseout", function(d){d3.select(this).style("fill", d.fill);});
+				d3.selectAll('path')
+				.attr('fill', function(d){return d.fill;})
+				.on("click", function(d){alert(d.name);});
+			socket.emit('my other event', { my: 'data' });
+		  });
+		</script>
+	</head>
+	<body>
+		
+    </body>
+</html>

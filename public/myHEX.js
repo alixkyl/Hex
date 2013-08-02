@@ -11,6 +11,7 @@ d3.hexbin = function() {
 		points.forEach(function(point, i) {
 			var id = point.q + "_" + point.r; 
 			binsById[id] = [point];
+			binsById[id].name = point.name;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
 			switch(point.c){
