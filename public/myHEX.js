@@ -14,63 +14,67 @@ d3.hexbin = function() {
 			binsById[id].name = point.name;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
-			switch(point.type){
+			switch(point.heigh){
+				case 0:
+					binsById[id].fill = "#FFF";
+					break;
 				case 1:
-					binsById[id].fill = "#111";
+					binsById[id].fill = "#F00";
 					break;
 				case 2:
-					binsById[id].fill = "#222";
+					binsById[id].fill = "#D00";
 					break;
 				case 3:
-					binsById[id].fill = "#333";
+					binsById[id].fill = "#B00";
 					break;
 				case 4:
-					binsById[id].fill = "#444";
+					binsById[id].fill = "#900";
 					break;
 				case 5:
-					binsById[id].fill = "#555";
+					binsById[id].fill = "#700";
 					break;
 				case 6:
-					binsById[id].fill = "#666";
+					binsById[id].fill = "#500";
 					break;
 				case 7:
-					binsById[id].fill = "#777";
+					binsById[id].fill = "#300";
 					break;
 				case 8:
-					binsById[id].fill = "#888";
+					binsById[id].fill = "#100";
 					break;
 				case 9:
-					binsById[id].fill = "#999";
+					binsById[id].fill = "#100";
 					break;
 				case -1:
-					binsById[id].fill = "#010";
+					binsById[id].fill = "#00F";
 					break;
 				case -2:
-					binsById[id].fill = "#020";
+					binsById[id].fill = "#00D";
 					break;
 				case -3:
-					binsById[id].fill = "#030";
+					binsById[id].fill = "#00B";
 					break;
 				case -4:
-					binsById[id].fill = "#040";
+					binsById[id].fill = "#009";
 					break;
 				case -5:
-					binsById[id].fill = "#050";
+					binsById[id].fill = "#007";
 					break;
 				case -6:
-					binsById[id].fill = "#060";
+					binsById[id].fill = "#005";
 					break;
 				case -7:
-					binsById[id].fill = "#070";
+					binsById[id].fill = "#003";
 					break;
 				case -8:
-					binsById[id].fill = "#080";
+					binsById[id].fill = "#001";
 					break;
 				case -9:
-					binsById[id].fill = "#090";
+					binsById[id].fill = "#001";
 					break;
 				default:
-					binsById[id].fill = "#FFF";
+					console.log(point.heigh);
+					binsById[id].fill = "#000";
 			}
 		});
 		return d3.values(binsById);

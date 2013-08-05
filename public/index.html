@@ -16,7 +16,7 @@
 		<script src="myHex.js"></script>
 		<script src="socket.io/socket.io.js"></script>
 		<script>
-		  var socket = io.connect('http://localhost:3000');
+		  var socket = io.connect();
 		  socket.on('data', function (data) {
 			var margin = {top: 20, right: 20, bottom: 30, left: 40},
 			width = 960 - margin.left - margin.right,
