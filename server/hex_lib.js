@@ -1,4 +1,4 @@
-var Alea = require('alea'),
+var Alea = require('alea')
 	,SimplexNoise = require('simplex-noise');
 exports.generateMap=function(size,seed,smoothstep,pass){
 	
@@ -27,37 +27,40 @@ exports.generateMap=function(size,seed,smoothstep,pass){
 		var offR = normalize_offset(d.r%3);
 		var offQ = normalize_offset(d.q%3);
 		var coord = cubic2grid(d.r,d.q);
-		var r1=simplex.noise2D(coord.x, coord.y);
-		e=r1;
-		
-		if(offR == 2 && offQ == 2){
-			
+		var w =0;
+		var e=0;
+		if(offR==0 && offQ==1){
+			var coord2 = cubic2grid(d.r,d.q-1);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==0 && offQ==2){
+			var coord2 = cubic2grid(d.r,d.q+1);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==1 && offQ==0){
+			var coord2 = cubic2grid(d.r-1,d.q);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==1 && offQ==1){
+			var coord2 = cubic2grid(d.r-1,d.q-2);
+			e=simplex.noise2D(coord2.x, coord2.y);
+			coord2 = cubic2grid(d.r+2,d.q-1);
+			e+=simplex.noise2D(coord2.x, coord2.y);
+			coord2 = cubic2grid(d.r-1,d.q+2);
+			e+=simplex.noise2D(coord2.x, coord2.y);
+			e/=3;
+		}else if(offR==1 && offQ==2){
+			var coord2 = cubic2grid(d.r-1,d.q+1);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==2 && offQ==0){
+			var coord2 = cubic2grid(d.r+1,d.q);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==2 && offQ==1){
+			var coord2 = cubic2grid(d.r+1,d.q-1);
+			e=simplex.noise2D(coord2.x, coord2.y);
+		}else if(offR==2 && offQ==2){
+			var coord2 = cubic2grid(d.r-1,d.q+1);
+			e=simplex.noise2D(coord2.x, coord2.y);
 		}
-		else if(offR == 1 && offQ == 0){
 		
-		}
-		else if(offR == 2 && offQ == 0){
-		
-		}
-		else if(offR == 0 && offQ == 1){
-		
-		}
-		else if(offR == 0 && offQ == 2){
-		
-		}
-		else if(offR == 1 && offQ == 1){
-		
-		}
-		else if(offR == 1 && offQ == 2){
-		
-		}
-		else if(offR == 2 && offQ == 1){
-		
-		}
-		
-		
-		
-		stepMap[h]={elevation:e, humidity:w};
+		stepMap[h]={elevation:e+0.1, humidity:w};
 	}
 	console.log("step1");
 	
@@ -77,7 +80,7 @@ exports.generateMap=function(size,seed,smoothstep,pass){
 	}
 	console.log("Finalstep");
 	for(h in mapData) {
-		mapData[h].heigh=Math.floor(stepMap[h].elevation);
+		mapData[h].heigh=Math.floor(stepMap[h].elevation*10);
 		mapData[h].moist=Math.floor(stepMap[h].humidity);
 	}
 	console.log("open");
@@ -110,7 +113,7 @@ function normalize_offset(o){
 }
 
 function cubic2grid(r,q){
-	var x = Math.sqrt(3) * (d.q + d.r/2);
-	var y = 3/2 * d.r;
+	var x = Math.sqrt(3) * (q + r/2);
+	var y = 3/2 * r;
 	return {x:x,y:y};
 }

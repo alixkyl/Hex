@@ -41,7 +41,7 @@ if (!module.parent) {
 	  server.listen(port)
 	}
 	
-var hexlib=require('./server/hexlib.js');
+var hexlib=require('./server/hex_lib.js');
 
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
