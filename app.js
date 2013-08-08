@@ -51,8 +51,8 @@ io.sockets.on('connection', function (socket) {
 			// else
 			  // socket.emit('data', { h: hexes });
 		// })
-	var mapData= hexlib.generateMap(50,10,1,0);
-	socket.emit('data', { h: mapData });
+	// var mapData= hexlib.generateMap(50,10,1,0);
+	socket.emit('data', {  });
 
 });
 

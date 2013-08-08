@@ -19,31 +19,31 @@ d3.hexbin = function() {
 					binsById[id].fill = "#FFF";
 					break;
 				case 1:
-					binsById[id].fill = "#F00";
+					binsById[id].fill = "#0F0";
 					break;
 				case 2:
-					binsById[id].fill = "#D00";
+					binsById[id].fill = "#0D0";
 					break;
 				case 3:
-					binsById[id].fill = "#B00";
+					binsById[id].fill = "#0B0";
 					break;
 				case 4:
-					binsById[id].fill = "#900";
+					binsById[id].fill = "#090";
 					break;
 				case 5:
-					binsById[id].fill = "#700";
+					binsById[id].fill = "#070";
 					break;
 				case 6:
-					binsById[id].fill = "#500";
+					binsById[id].fill = "#050";
 					break;
 				case 7:
-					binsById[id].fill = "#300";
+					binsById[id].fill = "#030";
 					break;
 				case 8:
-					binsById[id].fill = "#100";
+					binsById[id].fill = "#010";
 					break;
 				case 9:
-					binsById[id].fill = "#100";
+					binsById[id].fill = "#010";
 					break;
 				case -1:
 					binsById[id].fill = "#00F";
@@ -73,7 +73,6 @@ d3.hexbin = function() {
 					binsById[id].fill = "#001";
 					break;
 				default:
-					console.log(point.heigh);
 					binsById[id].fill = "#000";
 			}
 		});

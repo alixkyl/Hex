@@ -1,7 +1,6 @@
-var Alea = require('alea')
-	,SimplexNoise = require('simplex-noise');
-	var mapData={};
-exports.generateMap=function(size,seed,smoothstep,pass){
+(function() {
+var mapData={};
+generateMap=function(size,seed,smoothstep,pass){
 	
 	
 	
@@ -48,7 +47,7 @@ exports.generateMap=function(size,seed,smoothstep,pass){
 			e/=3;
 		}else if(offR==1 && offQ==2){
 			var coord2 = cubic2grid(d.r-1,d.q+1);
-			e=simplex.noise2D(coord2.x, coord2.y);
+			e=0.8*simplex.noise2D(coord2.x, coord2.y);
 		}else if(offR==2 && offQ==0){
 			var coord2 = cubic2grid(d.r+1,d.q);
 			e=simplex.noise2D(coord2.x, coord2.y);
@@ -64,29 +63,56 @@ exports.generateMap=function(size,seed,smoothstep,pass){
 		}
 		var coord2 = cubic2grid(d.r,d.q);
 			v=simplex.noise2D(coord2.x, coord2.y);
-		stepMap[h]={elevation:e, variation: v};
+			
+		var coef=0.6*Math.pow(coord2.x-size/2,3)/Math.pow(size,3)-0.5*Math.pow((coord2.y-size*(1.5)/2),4)/Math.pow(size,4);
+			coef-=0.4*Math.pow((coord2.y-size*(1.5)/2),4)/Math.pow(size,4)+0.3*Math.pow((coord2.x-size*(1.5)/2),4)/Math.pow(size,4);
+		
+			
+		stepMap[h]={elevation:coef+e*0, variation: v};
 	}
 	console.log("step1");
 	
 	if(smoothstep){
 		var tmpStepMap1={};
-		for(h in mapData) {
-			neighbors=getNeighbors(mapData[h]);
+		for(i2=0;i2<size;i2++){
+			for(j2=size-1;j2>=0;j2--){
+				var r= i2 ;
+				var q = j2 - Math.floor(i2/2);
+				var h=r+"_"+q;
+				neighbors=getNeighbors(mapData[h]);
 				var valid=0;
 				var totalE=0;
 				if(!tmpStepMap1[h])
 					tmpStepMap1[h]={};
 				for(n in neighbors)
 				{
-					if(tmpStepMap1[neighbors[n].name]){
-						totalE+=tmpStepMap1[neighbors[n].name].elevation;
-						valid++;
-					}
+					totalE+=stepMap[neighbors[n].name].elevation;
+					valid++;
 				}
-				if(valid){
+				if(valid)
 					totalE/=valid;
-				}
-				totalE*=1+stepMap[h].elevation;
+				else
+					totalE=stepMap[h].elevation;
+				tmpStepMap1[h]={elevation:totalE};
+			}
+		}
+		stepMap=tmpStepMap1;
+		tmpStepMap1={};
+		for(h in mapData) {
+			neighbors=getNeighbors(mapData[h]);
+			var valid=0;
+			var totalE=0;
+			if(!tmpStepMap1[h])
+				tmpStepMap1[h]={};
+			for(n in neighbors)
+			{
+				totalE+=stepMap[neighbors[n].name].elevation;
+				valid++;
+			}
+			if(valid)
+				totalE/=valid;
+			else
+				totalE=stepMap[h].elevation;
 			tmpStepMap1[h]={elevation:totalE};
 		}
 		stepMap=tmpStepMap1;
@@ -135,3 +161,4 @@ function cubic2grid(r,q){
 	var y = 3/2 * r;
 	return {x:x,y:y};
 }
+})();
