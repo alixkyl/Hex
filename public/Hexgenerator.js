@@ -1,6 +1,6 @@
 (function() {
 var mapData={};
-generateMap=function(size,seed,smoothstep,pass){
+generateMap=function(size,seed,patchSize,pass){
 	
 	
 	
@@ -61,64 +61,80 @@ generateMap=function(size,seed,smoothstep,pass){
 			var coord2 = cubic2grid(d.r,d.q);
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
-		var coord2 = cubic2grid(d.r,d.q);
-		v=simplex.noise2D(coord2.x, coord2.y);
-		var dfx=coord2.x%100;
-		var dfy=coord2.y%100;
+		var dfy=d.r-Math.abs((d.r%patchSize));
+		var dfx=d.q-Math.abs((d.q%patchSize));
+		
 		var fz=ff(function(rfx,rfy){
-			return simplex.noise2D(coord2.x-dfx+rfx, coord2.y-dfy+rfy);
-		});
-		coef=fz(dfx/100,dfy/100);		
+			dr=0/1;
+			dq=0/1;
 			
-		stepMap[h]={elevation:coef+e, variation: v};
+			if(rfx==1)
+				dq=patchSize/2;
+			else if(rfx==2)
+				dq=patchSize/1;
+				
+			if(rfy==1)
+				dr=patchSize/2;
+			else if(rfy==2)
+				dr=patchSize/1;
+			vr=dfy+dr;
+			vq=dfx+dq;
+			if(dfx<0)
+				console.log(vr,vq);
+			var co = cubic2grid(vr,vq);
+			return simplex.noise2D(co.x, co.y);
+		});
+		coef=fz(Math.abs((d.q%patchSize))/patchSize,Math.abs((d.r%patchSize))/patchSize);
+		
+		stepMap[h]={elevation:coef.y+e*0.1};
 	}
 	console.log("step1");
 	
-	if(smoothstep){
-		var tmpStepMap1={};
-		for(i2=0;i2<size;i2++){
-			for(j2=size-1;j2>=0;j2--){
-				var r= i2 ;
-				var q = j2 - Math.floor(i2/2);
-				var h=r+"_"+q;
-				neighbors=getNeighbors(mapData[h]);
-				var valid=0;
-				var totalE=0;
-				if(!tmpStepMap1[h])
-					tmpStepMap1[h]={};
-				for(n in neighbors)
-				{
-					totalE+=stepMap[neighbors[n].name].elevation;
-					valid++;
-				}
-				if(valid)
-					totalE/=valid;
-				else
-					totalE=stepMap[h].elevation;
-				tmpStepMap1[h]={elevation:totalE};
-			}
-		}
-		stepMap=tmpStepMap1;
-		tmpStepMap1={};
-		for(h in mapData) {
-			neighbors=getNeighbors(mapData[h]);
-			var valid=0;
-			var totalE=0;
-			if(!tmpStepMap1[h])
-				tmpStepMap1[h]={};
-			for(n in neighbors)
-			{
-				totalE+=stepMap[neighbors[n].name].elevation;
-				valid++;
-			}
-			if(valid)
-				totalE/=valid;
-			else
-				totalE=stepMap[h].elevation;
-			tmpStepMap1[h]={elevation:totalE};
-		}
-		stepMap=tmpStepMap1;
-	}
+	// if(smoothstep){
+		// var tmpStepMap1={};
+		// for(i2=0;i2<size;i2++){
+			// for(j2=size-1;j2>=0;j2--){
+				// var r= i2 ;
+				// var q = j2 - Math.floor(i2/2);
+				// var h=r+"_"+q;
+				// neighbors=getNeighbors(mapData[h]);
+				// var valid=0;
+				// var totalE=0;
+				// if(!tmpStepMap1[h])
+					// tmpStepMap1[h]={};
+				// for(n in neighbors)
+				// {
+					// totalE+=stepMap[neighbors[n].name].elevation;
+					// valid++;
+				// }
+				// if(valid)
+					// totalE/=valid;
+				// else
+					// totalE=stepMap[h].elevation;
+				// tmpStepMap1[h]={elevation:totalE};
+			// }
+		// }
+		// stepMap=tmpStepMap1;
+		// tmpStepMap1={};
+		// for(h in mapData) {
+			// neighbors=getNeighbors(mapData[h]);
+			// var valid=0;
+			// var totalE=0;
+			// if(!tmpStepMap1[h])
+				// tmpStepMap1[h]={};
+			// for(n in neighbors)
+			// {
+				// totalE+=stepMap[neighbors[n].name].elevation;
+				// valid++;
+			// }
+			// if(valid)
+				// totalE/=valid;
+			// else
+				// totalE=stepMap[h].elevation;
+			// tmpStepMap1[h]={elevation:totalE};
+		// }
+		// stepMap=tmpStepMap1;
+	// }
 
 	console.log("step2");
 	
@@ -164,21 +180,22 @@ function cubic2grid(r,q){
 	return {x:x,y:y};
 }
 function ff(func){
+	
 	var nsControlPoints = [
 		[
 			new THREE.Vector4 ( 0, func(0,0), 0, 1 ),
-			new THREE.Vector4 ( 0, func(0,5), 5, 1 ),
-			new THREE.Vector4 ( 0, func(0,10), 10, 1 )
+			new THREE.Vector4 ( 0, func(0,1), 5, 1 ),
+			new THREE.Vector4 ( 0, func(0,2), 10, 1 )
 		],
 		[
-			new THREE.Vector4 ( 5, func(5,0), 0, 1 ),
-			new THREE.Vector4 ( 5, func(5,5), 5, 5 ),
-			new THREE.Vector4 ( 5, func(5,10), 10, 5 )
+			new THREE.Vector4 ( 5, func(1,0), 0, 1 ),
+			new THREE.Vector4 ( 5, func(1,1), 5, 1 ),
+			new THREE.Vector4 ( 5, func(1,2), 10, 1 )
 		],
 		[
-			new THREE.Vector4 ( 10, func(10,0), 0, 1 ),
-			new THREE.Vector4 ( 10, func(10,5), 5, 1 ),
-			new THREE.Vector4 ( 10, func(10,10), 10, 1 )
+			new THREE.Vector4 ( 10, func(2,0), 0, 1 ),
+			new THREE.Vector4 ( 10, func(2,1), 5, 1 ),
+			new THREE.Vector4 ( 10, func(2,2), 10, 1 )
 		]
 	];
 	var degree1 = 2;

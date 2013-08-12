@@ -30,14 +30,14 @@
 			data=tmp[i].split("=");
 			params[data[0]]=data[1];		
 		}
-		  var socket = io.connect();
-		  socket.on('data', function (data) {
-			var margin = {top: 20, right: 20, bottom: 30, left: 40},
-			width = 960 - margin.left - margin.right,
-			height = 500 - margin.top - margin.bottom;
+		var socket = io.connect();
+		socket.on('data', function (data) {
+		var margin = {top: 20, right: 20, bottom: 30, left: 40},
+		width = 960 - margin.left - margin.right,
+		height = 500 - margin.top - margin.bottom;
 
 			
-			data=generateMap(params.size||100,params.seed||Math.random(),1,0);
+			data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0);
 			
 			
 			var i=0;
