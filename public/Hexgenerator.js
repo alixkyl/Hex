@@ -62,13 +62,15 @@ generateMap=function(size,seed,smoothstep,pass){
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
 		var coord2 = cubic2grid(d.r,d.q);
-			v=simplex.noise2D(coord2.x, coord2.y);
+		v=simplex.noise2D(coord2.x, coord2.y);
+		var dfx=coord2.x%100;
+		var dfy=coord2.y%100;
+		var fz=ff(function(rfx,rfy){
+			return simplex.noise2D(coord2.x-dfx+rfx, coord2.y-dfy+rfy);
+		});
+		coef=fz(dfx/100,dfy/100);		
 			
-		var coef=0.6*Math.pow(coord2.x-size/2,3)/Math.pow(size,3)-0.5*Math.pow((coord2.y-size*(1.5)/2),4)/Math.pow(size,4);
-			coef-=0.4*Math.pow((coord2.y-size*(1.5)/2),4)/Math.pow(size,4)+0.3*Math.pow((coord2.x-size*(1.5)/2),4)/Math.pow(size,4);
-		
-			
-		stepMap[h]={elevation:coef+e*0, variation: v};
+		stepMap[h]={elevation:coef+e, variation: v};
 	}
 	console.log("step1");
 	
@@ -160,5 +162,33 @@ function cubic2grid(r,q){
 	var x = Math.sqrt(3) * (q + r/2);
 	var y = 3/2 * r;
 	return {x:x,y:y};
+}
+function ff(func){
+	var nsControlPoints = [
+		[
+			new THREE.Vector4 ( 0, func(0,0), 0, 1 ),
+			new THREE.Vector4 ( 0, func(0,5), 5, 1 ),
+			new THREE.Vector4 ( 0, func(0,10), 10, 1 )
+		],
+		[
+			new THREE.Vector4 ( 5, func(5,0), 0, 1 ),
+			new THREE.Vector4 ( 5, func(5,5), 5, 5 ),
+			new THREE.Vector4 ( 5, func(5,10), 10, 5 )
+		],
+		[
+			new THREE.Vector4 ( 10, func(10,0), 0, 1 ),
+			new THREE.Vector4 ( 10, func(10,5), 5, 1 ),
+			new THREE.Vector4 ( 10, func(10,10), 10, 1 )
+		]
+	];
+	var degree1 = 2;
+	var degree2 = 2;
+	var knots1 = [0, 0, 0, 1, 1, 1];
+	var knots2 = [0, 0, 0, 1, 1, 1];
+	var nurbsSurface = new THREE.NURBSSurface(degree1, degree2, knots1, knots2, nsControlPoints);
+
+	return getSurfacePoint = function(u, v) {
+		return nurbsSurface.getPoint(u, v);
+	};
 }
 })();
