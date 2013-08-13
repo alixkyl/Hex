@@ -61,30 +61,51 @@ generateMap=function(size,seed,patchSize,pass){
 			var coord2 = cubic2grid(d.r,d.q);
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
-		var dfy=d.r-Math.abs((d.r%patchSize));
-		var dfx=d.q-Math.abs((d.q%patchSize));
+		
+		var dfy=0;
+		if(d.r<0)
+			dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
+		else
+			dfy=d.r-Math.abs(d.r%patchSize);
+		var dfx=0;
+		if(d.q<0)
+			dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
+		else
+			dfx=d.q-Math.abs(d.q%patchSize);
 		
 		var fz=ff(function(rfx,rfy){
 			dr=0/1;
 			dq=0/1;
 			
 			if(rfx==1)
-				dq=patchSize/2;
+				dq = patchSize/2;
 			else if(rfx==2)
-				dq=patchSize/1;
+				dq = patchSize/1;
 				
 			if(rfy==1)
-				dr=patchSize/2;
+				dr = patchSize/2;
 			else if(rfy==2)
-				dr=patchSize/1;
-			vr=dfy+dr;
-			vq=dfx+dq;
-			if(dfx<0)
-				console.log(vr,vq);
+				dr = patchSize/1;
+				
+			vr = dfy + dr;
+			vq = dfx + dq;
+			
 			var co = cubic2grid(vr,vq);
+			
 			return simplex.noise2D(co.x, co.y);
 		});
-		coef=fz(Math.abs((d.q%patchSize))/patchSize,Math.abs((d.r%patchSize))/patchSize);
+		var dcr=0;
+		if(d.r<0)
+			dcr=(patchSize-Math.abs(d.r%patchSize))/patchSize;
+		else
+			dcr=Math.abs(d.r%patchSize)/patchSize;
+		var dcq=0;
+		if(d.q<0)
+			dcq=(patchSize-Math.abs(d.q%patchSize))/patchSize;
+		else
+			dcq=Math.abs(d.q%patchSize)/patchSize;
+			
+		coef=fz(dcq,dcr);
 		
 		stepMap[h]={elevation:coef.y+e*0.1};
 	}
