@@ -37,7 +37,7 @@
 		height = 500 - margin.top - margin.bottom;
 
 			
-			data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0);
+			data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0.05);
 			
 			
 			var i=0;
@@ -52,8 +52,8 @@
 				.radius(radius);
 
 			var svg = d3.select("body").append("svg")
-				.attr("width", "100%")
-				.attr("height", "100%")
+				.attr("width", "200%")
+				.attr("height", "200%")
 			  .append("g")
 				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

@@ -1,6 +1,6 @@
 (function() {
 var mapData={};
-generateMap=function(size,seed,patchSize,pass){
+generateMap=function(size,seed,patchSize,noiseImpact){
 	
 	
 	
@@ -107,10 +107,10 @@ generateMap=function(size,seed,patchSize,pass){
 			
 		coef=fz(dcq,dcr);
 		
-		stepMap[h]={elevation:coef.y+e*0.1};
+		stepMap[h]={elevation:coef.y+e*noiseImpact};
 	}
 	console.log("step1");
-	
+	// smoothstep=0
 	// if(smoothstep){
 		// var tmpStepMap1={};
 		// for(i2=0;i2<size;i2++){
@@ -158,10 +158,6 @@ generateMap=function(size,seed,patchSize,pass){
 	// }
 
 	console.log("step2");
-	
-	for(p=0;p<pass;p++){
-		
-	}
 	console.log("Finalstep");
 	for(h in mapData) {
 		mapData[h].heigh=Math.floor(stepMap[h].elevation*10);
