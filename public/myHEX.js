@@ -1,5 +1,20 @@
 (function() {
+var biome=[
+	[0xFF0000,0xCDFA5C,0x9BFA5C,0x21CF1B,0x098C04],
+	[0xFAE25C,0xCDFA5C,0xCDFA5C,0x21CF1B,0x098C04],
+	[0xFAE25C,0xCDFA5C,0x9BFA5C,0x21CF1B,0x098C04],
+	[0xFAE25C,0xCDFA5C,0x9BFA5C,0x21CF1B,0x098C04],
+	[0x9EA8A5,0xCDFA5C,0x9BFA5C,0x00FFA2,0x00FFA2]
+];
+Math.clip = function(number, min, max) {
+  return Math.max(min, Math.min(number, max));
+}
+function getBiomeColor(height,moist){
+	
+	return biome[Math.clip(Math.floor(height/2),0,4)][Math.clip(Math.floor((1+moist)/4),0,4)];
 
+
+}
 d3.hexbin = function() {
 	var width = 1;
     var height = 1;
@@ -14,67 +29,10 @@ d3.hexbin = function() {
 			binsById[id].name = point.name;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
-			switch(point.heigh){
-				case 0:
-					binsById[id].fill = "#FFF";
-					break;
-				case 1:
-					binsById[id].fill = "#0F0";
-					break;
-				case 2:
-					binsById[id].fill = "#0D0";
-					break;
-				case 3:
-					binsById[id].fill = "#0B0";
-					break;
-				case 4:
-					binsById[id].fill = "#090";
-					break;
-				case 5:
-					binsById[id].fill = "#070";
-					break;
-				case 6:
-					binsById[id].fill = "#050";
-					break;
-				case 7:
-					binsById[id].fill = "#030";
-					break;
-				case 8:
-					binsById[id].fill = "#010";
-					break;
-				case 9:
-					binsById[id].fill = "#010";
-					break;
-				case -1:
-					binsById[id].fill = "#00F";
-					break;
-				case -2:
-					binsById[id].fill = "#00D";
-					break;
-				case -3:
-					binsById[id].fill = "#00B";
-					break;
-				case -4:
-					binsById[id].fill = "#009";
-					break;
-				case -5:
-					binsById[id].fill = "#007";
-					break;
-				case -6:
-					binsById[id].fill = "#005";
-					break;
-				case -7:
-					binsById[id].fill = "#003";
-					break;
-				case -8:
-					binsById[id].fill = "#001";
-					break;
-				case -9:
-					binsById[id].fill = "#001";
-					break;
-				default:
-					binsById[id].fill = "#000";
-			}
+			if(point.height<0)
+				binsById[id].fill='#'+Math.floor(0x10000FF-(-point.height)*0x000022).toString(16).substr(1,6);
+			else if(point.height>=0)
+				binsById[id].fill='#'+Math.floor((0x100FF00-(point.height*0x002200))/**getBiomeColor(point.height,point.moist)*/).toString(16).substr(1,6);
 		});
 		return d3.values(binsById);
 	}

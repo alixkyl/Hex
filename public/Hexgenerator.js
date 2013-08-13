@@ -7,6 +7,7 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 	
 	
     var simplex = new SimplexNoise(new Alea(seed));
+    var simplexH = new SimplexNoise(new Alea(seed*2));
     
 	for(i=0;i<size;i++)
 	{
@@ -94,6 +95,28 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 			
 			return simplex.noise2D(co.x, co.y);
 		});
+		
+		var fh=ff(function(rfx,rfy){
+			dr=0/1;
+			dq=0/1;
+			
+			if(rfx==1)
+				dq = patchSize/2;
+			else if(rfx==2)
+				dq = patchSize/1;
+				
+			if(rfy==1)
+				dr = patchSize/2;
+			else if(rfy==2)
+				dr = patchSize/1;
+				
+			vr = dfy + dr;
+			vq = dfx + dq;
+			
+			var co = cubic2grid(vr,vq);
+			
+			return simplexH.noise2D(co.x, co.y);
+		});
 		var dcr=0;
 		if(d.r<0)
 			dcr=(patchSize-Math.abs(d.r%patchSize))/patchSize;
@@ -106,61 +129,17 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 			dcq=Math.abs(d.q%patchSize)/patchSize;
 			
 		coef=fz(dcq,dcr);
-		
-		stepMap[h]={elevation:coef.y+e*noiseImpact};
+		coefH=fh(dcq,dcr);
+		stepMap[h]={elevation:coef.y+e*noiseImpact,humidity:coefH.y};
 	}
 	console.log("step1");
-	// smoothstep=0
-	// if(smoothstep){
-		// var tmpStepMap1={};
-		// for(i2=0;i2<size;i2++){
-			// for(j2=size-1;j2>=0;j2--){
-				// var r= i2 ;
-				// var q = j2 - Math.floor(i2/2);
-				// var h=r+"_"+q;
-				// neighbors=getNeighbors(mapData[h]);
-				// var valid=0;
-				// var totalE=0;
-				// if(!tmpStepMap1[h])
-					// tmpStepMap1[h]={};
-				// for(n in neighbors)
-				// {
-					// totalE+=stepMap[neighbors[n].name].elevation;
-					// valid++;
-				// }
-				// if(valid)
-					// totalE/=valid;
-				// else
-					// totalE=stepMap[h].elevation;
-				// tmpStepMap1[h]={elevation:totalE};
-			// }
-		// }
-		// stepMap=tmpStepMap1;
-		// tmpStepMap1={};
-		// for(h in mapData) {
-			// neighbors=getNeighbors(mapData[h]);
-			// var valid=0;
-			// var totalE=0;
-			// if(!tmpStepMap1[h])
-				// tmpStepMap1[h]={};
-			// for(n in neighbors)
-			// {
-				// totalE+=stepMap[neighbors[n].name].elevation;
-				// valid++;
-			// }
-			// if(valid)
-				// totalE/=valid;
-			// else
-				// totalE=stepMap[h].elevation;
-			// tmpStepMap1[h]={elevation:totalE};
-		// }
-		// stepMap=tmpStepMap1;
-	// }
+	
 
 	console.log("step2");
 	console.log("Finalstep");
 	for(h in mapData) {
-		mapData[h].heigh=Math.floor(stepMap[h].elevation*10);
+		mapData[h].height=Math.floor(stepMap[h].elevation*10);
+		mapData[h].moist=Math.floor(stepMap[h].humidity*10);
 	}
 	console.log("open");
 	return mapData;
