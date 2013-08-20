@@ -1,6 +1,6 @@
 (function() {
 var mapData={};
-generateMap=function(size,seed,patchSize,noiseImpact){
+generateMap=function(size,seed,patchSize,noiseImpact,delta){
 	
 	
 	
@@ -9,15 +9,34 @@ generateMap=function(size,seed,patchSize,noiseImpact){
     var simplex = new SimplexNoise(new Alea(seed));
     var simplexH = new SimplexNoise(new Alea(seed*2));
     
-	for(i=0;i<size;i++)
-	{
-		for(j=0;j<size;j++)
+	// for(i=0;i<size;i++)
+	// {
+		// for(j=0;j<size;j++)
+		// {
+			// var r= i ;
+			// var q = j - Math.floor(i/2);
+			// mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
+		// }
+	// }
+	
+	
+	N=3
+	for(r=-N;r<=N;r++)
+		for(q=Math.max(-N, -r-N);q<=Math.min(N, -r+N);q++)
 		{
-			var r= i ;
-			var q = j - Math.floor(i/2);
-			mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
+			mapData[(r+delta.r)+"_"+(q+delta.q)] = {_id:(r+delta.r)+"_"+(q+delta.q), name: (r+delta.r)+"_"+(q+delta.q), r:r+delta.r,q:q+delta.q,heigh:0,moist:0 }
+	
+	
 		}
-	}
+	// for(r=0;r<size;r++)
+	// {
+		// for(q=0;q<size;q++)
+		// {
+			// var r= i ;
+			// var q = j - Math.floor(i/2);
+			// mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
+		// }
+	// }
 	console.log("initGeneration");
 	var land=0.5;
 	var sea=0.5;
@@ -63,18 +82,19 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
 		
-		var dfy=0;
-		if(d.r<0)
-			dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
-		else
-			dfy=d.r-Math.abs(d.r%patchSize);
-		var dfx=0;
-		if(d.q<0)
-			dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
-		else
-			dfx=d.q-Math.abs(d.q%patchSize);
 		
-		var fz=ff(function(rfx,rfy){
+		
+		var fz=nurbsGenerator(function(rfx,rfy){
+			var dfy=0;
+			if(d.r<0)
+				dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
+			else
+				dfy=d.r-Math.abs(d.r%patchSize);
+			var dfx=0;
+			if(d.q<0)
+				dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
+			else
+				dfx=d.q-Math.abs(d.q%patchSize);
 			dr=0/1;
 			dq=0/1;
 			
@@ -96,7 +116,18 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 			return simplex.noise2D(co.x, co.y);
 		});
 		
-		var fh=ff(function(rfx,rfy){
+		var fh=nurbsGenerator(function(rfx,rfy){
+			var dfy=0;
+			if(d.r<0)
+				dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
+			else
+				dfy=d.r-Math.abs(d.r%patchSize);
+				
+			var dfx=0;
+			if(d.q<0)
+				dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
+			else
+				dfx=d.q-Math.abs(d.q%patchSize);
 			dr=0/1;
 			dq=0/1;
 			
@@ -117,11 +148,13 @@ generateMap=function(size,seed,patchSize,noiseImpact){
 			
 			return simplexH.noise2D(co.x, co.y);
 		});
+		
 		var dcr=0;
 		if(d.r<0)
 			dcr=(patchSize-Math.abs(d.r%patchSize))/patchSize;
 		else
 			dcr=Math.abs(d.r%patchSize)/patchSize;
+			
 		var dcq=0;
 		if(d.q<0)
 			dcq=(patchSize-Math.abs(d.q%patchSize))/patchSize;
@@ -175,7 +208,7 @@ function cubic2grid(r,q){
 	var y = 3/2 * r;
 	return {x:x,y:y};
 }
-function ff(func){
+function nurbsGenerator(func){
 	
 	var nsControlPoints = [
 		[

@@ -35,9 +35,10 @@
 		var margin = {top: 20, right: 20, bottom: 30, left: 40},
 		width = 960 - margin.left - margin.right,
 		height = 500 - margin.top - margin.bottom;
-
+		
+		delta={q:10,r:10}
 			
-			data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0.05);
+		data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0.1,delta);
 			
 			
 			var i=0;
@@ -45,7 +46,7 @@
 			for (hex in data) 
 			  points[i++]=data[hex];
 			
-			var radius = 5;
+			var radius = 30;
 
 			var hexbin = d3.hexbin()
 				.size([width, height])
