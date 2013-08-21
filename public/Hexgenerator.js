@@ -6,40 +6,31 @@ generateMap=function(size,seed,patchSize,noiseImpact,delta){
 	
 	
 	
-    var simplex = new SimplexNoise(new Alea(seed));
+    var simplex = new SimplexNoise(new Alea(seed+1));
     var simplexH = new SimplexNoise(new Alea(seed*2));
     
-	// for(i=0;i<size;i++)
-	// {
-		// for(j=0;j<size;j++)
-		// {
-			// var r= i ;
-			// var q = j - Math.floor(i/2);
-			// mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
-		// }
-	// }
-	
-	
-	N=3
-	for(r=-N;r<=N;r++)
-		for(q=Math.max(-N, -r-N);q<=Math.min(N, -r+N);q++)
+	for(i=0;i<size;i++)
+	{
+		for(j=0;j<size;j++)
 		{
-			mapData[(r+delta.r)+"_"+(q+delta.q)] = {_id:(r+delta.r)+"_"+(q+delta.q), name: (r+delta.r)+"_"+(q+delta.q), r:r+delta.r,q:q+delta.q,heigh:0,moist:0 }
-	
-	
+			var r= i ;
+			var q = j - Math.floor(i/2);
+			mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
 		}
-	// for(r=0;r<size;r++)
-	// {
-		// for(q=0;q<size;q++)
+	}
+	
+	
+	// N=3
+	// for(r=-N;r<=N;r++)
+		// for(q=Math.max(-N, -r-N);q<=Math.min(N, -r+N);q++)
 		// {
-			// var r= i ;
-			// var q = j - Math.floor(i/2);
-			// mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
+			// mapData[(r+delta.r)+"_"+(q+delta.q)] = {_id:(r+delta.r)+"_"+(q+delta.q), name: (r+delta.r)+"_"+(q+delta.q), r:r+delta.r,q:q+delta.q,heigh:0,moist:0 }
+	
+	
 		// }
-	// }
+	
 	console.log("initGeneration");
-	var land=0.5;
-	var sea=0.5;
+	var land_sea=0.1;
 	var stepMap={};
 	
 	for(h in mapData) {
@@ -82,31 +73,32 @@ generateMap=function(size,seed,patchSize,noiseImpact,delta){
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
 		
-		
-		
-		var fz=nurbsGenerator(function(rfx,rfy){
+		var p2=50;
+		var fh=nurbsGenerator(function(rfx,rfy){
 			var dfy=0;
+			
 			if(d.r<0)
-				dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
+				dfy=d.r-(p2-Math.abs(d.r%p2));
 			else
-				dfy=d.r-Math.abs(d.r%patchSize);
+				dfy=d.r-Math.abs(d.r%p2);
+				
 			var dfx=0;
 			if(d.q<0)
-				dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
+				dfx=d.q-(p2-Math.abs(d.q%p2));
 			else
-				dfx=d.q-Math.abs(d.q%patchSize);
+				dfx=d.q-Math.abs(d.q%p2);
 			dr=0/1;
 			dq=0/1;
 			
 			if(rfx==1)
-				dq = patchSize/2;
+				dq = p2/2;
 			else if(rfx==2)
-				dq = patchSize/1;
+				dq = p2/1;
 				
 			if(rfy==1)
-				dr = patchSize/2;
+				dr = p2/2;
 			else if(rfy==2)
-				dr = patchSize/1;
+				dr = p2/1;
 				
 			vr = dfy + dr;
 			vq = dfx + dq;
@@ -116,54 +108,19 @@ generateMap=function(size,seed,patchSize,noiseImpact,delta){
 			return simplex.noise2D(co.x, co.y);
 		});
 		
-		var fh=nurbsGenerator(function(rfx,rfy){
-			var dfy=0;
-			if(d.r<0)
-				dfy=d.r-(patchSize-Math.abs(d.r%patchSize));
-			else
-				dfy=d.r-Math.abs(d.r%patchSize);
-				
-			var dfx=0;
-			if(d.q<0)
-				dfx=d.q-(patchSize-Math.abs(d.q%patchSize));
-			else
-				dfx=d.q-Math.abs(d.q%patchSize);
-			dr=0/1;
-			dq=0/1;
-			
-			if(rfx==1)
-				dq = patchSize/2;
-			else if(rfx==2)
-				dq = patchSize/1;
-				
-			if(rfy==1)
-				dr = patchSize/2;
-			else if(rfy==2)
-				dr = patchSize/1;
-				
-			vr = dfy + dr;
-			vq = dfx + dq;
-			
-			var co = cubic2grid(vr,vq);
-			
-			return simplexH.noise2D(co.x, co.y);
-		});
-		
 		var dcr=0;
 		if(d.r<0)
-			dcr=(patchSize-Math.abs(d.r%patchSize))/patchSize;
+			dcr=(p2-Math.abs(d.r%p2))/p2;
 		else
-			dcr=Math.abs(d.r%patchSize)/patchSize;
+			dcr=Math.abs(d.r%p2)/p2;
 			
 		var dcq=0;
 		if(d.q<0)
-			dcq=(patchSize-Math.abs(d.q%patchSize))/patchSize;
+			dcq=(p2-Math.abs(d.q%p2))/p2;
 		else
-			dcq=Math.abs(d.q%patchSize)/patchSize;
-			
-		coef=fz(dcq,dcr);
+			dcq=Math.abs(d.q%p2)/p2;
 		coefH=fh(dcq,dcr);
-		stepMap[h]={elevation:coef.y+e*noiseImpact,humidity:coefH.y};
+		stepMap[h]={elevation:makeHexVariation(d,seed,patchSize,3)+e*noiseImpact+land_sea,humidity:coefH.y};
 	}
 	console.log("step1");
 	
@@ -208,6 +165,62 @@ function cubic2grid(r,q){
 	var y = 3/2 * r;
 	return {x:x,y:y};
 }
+
+function makeHexVariation(hex, seed, patchSize, degree){
+	result=0;
+	for(i=1;i<=degree;i++){
+		var simplex = new SimplexNoise(new Alea(seed*i));
+		patch=patchSize*Math.pow(2,i-1);
+		var fh=nurbsGenerator(function(rfx,rfy){
+			var dfy=0;
+			
+			if(hex.r<0)
+				dfy=hex.r-(patch-Math.abs(hex.r%patch));
+			else
+				dfy=hex.r-Math.abs(hex.r%patch);
+				
+			var dfx=0;
+			if(hex.q<0)
+				dfx=hex.q-(patch-Math.abs(hex.q%patch));
+			else
+				dfx=hex.q-Math.abs(hex.q%patch);
+			dr=0/1;
+			dq=0/1;
+			
+			if(rfx==1)
+				dq = patch/2;
+			else if(rfx==2)
+				dq = patch/1;
+				
+			if(rfy==1)
+				dr = patch/2;
+			else if(rfy==2)
+				dr = patch/1;
+				
+			vr = dfy + dr;
+			vq = dfx + dq;
+			
+			var co = cubic2grid(vr,vq);
+			
+			return simplex.noise2D(co.x, co.y);
+		});
+		var dcr=0;
+		if(hex.r<0)
+			dcr=(patch-Math.abs(hex.r%patch))/patch;
+		else
+			dcr=Math.abs(hex.r%patch)/patch;
+			
+		var dcq=0;
+		if(hex.q<0)
+			dcq=(patch-Math.abs(hex.q%patch))/patch;
+		else
+			dcq=Math.abs(hex.q%patch)/patch;
+		var zsq=fh(dcq,dcr).y
+		result=result+zsq/Math.pow(2,degree-i);
+	}
+	return result;
+}
+
 function nurbsGenerator(func){
 	
 	var nsControlPoints = [

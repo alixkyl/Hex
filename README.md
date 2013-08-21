@@ -9,10 +9,13 @@ FEATURES
 -hexmap rendering with <svg> with d3.js
 -PRNG with alea.js
 -noise with simplex-noise.js
--shape with nurbs(three.js)
+-shape with NURBS(three.js),layering NURBS of differente size(2^) to produce better shape
+-biomes(elevation/humidity)
 
 TODO
 ===
--adding biome
--adding river
+
+-post generation opération for none dynamic maps(like biomes correction)
 -server side generation
+-adding river
+-find detter way for biomes génération

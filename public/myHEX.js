@@ -41,6 +41,7 @@ d3.hexbin = function() {
 				binsById[id].fill='#'+shadeColor(0x0000FF,point.height*10);
 			else if(point.height>=0)
 				binsById[id].fill='#'+shadeColor(getBiomeColor(point.height,point.moist),-point.height*10);
+				// binsById[id].fill='#'+shadeColor(0x00FF00,(1+point.moist)*5);
 		});
 		return d3.values(binsById);
 	}
