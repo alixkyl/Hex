@@ -41,8 +41,11 @@ if (!module.parent) {
 	  server.listen(port)
 	}
 	
-var hexlib=require('./server/hex_lib.js');
+var hexlib=require('./server/Hexgenerator.js');
 
+delta={q:0,r:0}
+				
+mapData=generateMap(200,1,25,0.05,delta);
 io.set('log level', 1);
 io.sockets.on('connection', function (socket) {
 	// Hex.find({ }, function (err, hexes){
@@ -51,8 +54,8 @@ io.sockets.on('connection', function (socket) {
 			// else
 			  // socket.emit('data', { h: hexes });
 		// })
-	// var mapData= hexlib.generateMap(50,10,1,0);
-	socket.emit('data', {  });
+	// 
+	socket.emit('data',  mapData );
 
 });
 

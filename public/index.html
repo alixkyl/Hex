@@ -12,15 +12,10 @@
 		}
 
 		</style>
+		
+		<script src="ext_lib/socket.io/socket.io.js"></script>
 		<script src="ext_lib/d3.v3.min.js"></script>
 		<script src="myHex.js"></script>
-		<script src="Hexgenerator.js"></script>
-		<script src="ext_lib/Alea.js"></script>
-		<script src="ext_lib/simplex-noise.min.js"></script>
-		<script src="ext_lib/three.min.js"></script>
-		<script src="ext_lib/NURBSSurface.js"></script>
-		<script src="ext_lib/NURBSUtils.js"></script>
-		<script src="ext_lib/socket.io/socket.io.js"></script>
 		<script>
 		var params=new Object();
 
@@ -32,13 +27,10 @@
 		}
 		var socket = io.connect();
 		socket.on('data', function (data) {
-		var margin = {top: 20, right: 20, bottom: 30, left: 40},
-		width = 960 - margin.left - margin.right,
-		height = 500 - margin.top - margin.bottom;
-		
-		delta={q:42,r:108}
+			var margin = {top: 20, right: 20, bottom: 30, left: 40},
+			width = 960 - margin.left - margin.right,
+			height = 500 - margin.top - margin.bottom;
 			
-		data=generateMap(params.size||50,params.seed||Math.random(),params.patch||20,0.05,delta);
 			
 			
 			var i=0;
