@@ -17,8 +17,9 @@
 		<script src="ext_lib/d3.v3.min.js"></script>
 		<script src="myHex.js"></script>
 		<script>
+		console.log('start page');
 		var params=new Object();
-
+	
 		var tmp=window.location.search.substr(1).split("&");
 		for (i=0; i<tmp.length; i++)
 		{
@@ -27,6 +28,7 @@
 		}
 		var socket = io.connect();
 		socket.on('data', function (data) {
+			console.log('start draw');
 			var margin = {top: 20, right: 20, bottom: 30, left: 40},
 			width = 960 - margin.left - margin.right,
 			height = 500 - margin.top - margin.bottom;
@@ -61,7 +63,8 @@
 				.on("mouseout", function(d){d3.select(this).style("fill", d.fill);});
 				d3.selectAll('path')
 				.attr('fill', function(d){return d.fill;})
-				.on("click", function(d){alert(d.name);});
+				.on("click", function(d){alert(d.name+"=>"+d.height+"/"+d.moist);});
+				console.log('end draw');
 		  });
 		</script>
 	</head>

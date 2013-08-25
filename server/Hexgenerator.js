@@ -77,7 +77,7 @@ generateMap=function(size,seed,patchSize,noiseImpact,delta){
 			e=simplex.noise2D(coord2.x, coord2.y);
 		}
 		
-		var p2=50;
+		var p2=100;
 		var fh=nurbsGenerator(function(rfx,rfy){
 			var dfy=0;
 			

@@ -35,6 +35,8 @@ d3.hexbin = function() {
 			var id = point.q + "_" + point.r; 
 			binsById[id] = [point];
 			binsById[id].name = point.name;
+			binsById[id].height = point.height;
+			binsById[id].moist = point.moist;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
 			if(point.height<0)
