@@ -1,6 +1,6 @@
 (function() {
 var biome=[
-	[0xD3F205,0x00FA5C,0x00FA5C,0x21CF1B,0x098C04],
+	[0x70F205,0x00FA5C,0x00FA5C,0x21CF1B,0x098C04],
 	[0xFAE25C,0x00FA5C,0xCDFA5C,0x21CF1B,0x098C04],
 	[0xFAE25C,0x00FA5C,0x00FA5C,0x21CF1B,0x098C04],
 	[0xFAE25C,0x00FA5C,0x00FA5C,0x21CF1B,0x098C04],
@@ -33,10 +33,7 @@ d3.hexbin = function() {
 
 		points.forEach(function(point, i) {
 			var id = point.q + "_" + point.r; 
-			binsById[id] = [point];
-			binsById[id].name = point.name;
-			binsById[id].height = point.height;
-			binsById[id].moist = point.moist;
+			binsById[id] = point;
 			binsById[id].x = size * Math.sqrt(3) * (point.q + point.r/2);
 			binsById[id].y = size * 3/2 * point.r;
 			if(point.height<0)
@@ -44,6 +41,19 @@ d3.hexbin = function() {
 			else if(point.height>=0)
 				binsById[id].fill='#'+shadeColor(getBiomeColor(point.height,point.moist),-point.height*10);
 				// binsById[id].fill='#'+shadeColor(0x00FF00,(1+point.moist)*5);
+			binsById[id].img="";
+			if(point.q==0 && point.r==0){
+				binsById[id].stroke="#F00";
+				binsById[id].stroke_width="2px";
+			}else{
+				binsById[id].stroke="#666";
+				binsById[id].stroke_width="0.3px";
+			
+			}
+			if(point.height>7)
+				binsById[id].img="./mount.png";
+			else if (point.height>3)
+				binsById[id].img="./hill.png";
 		});
 		return d3.values(binsById);
 	}
@@ -77,7 +87,7 @@ d3.hexbin = function() {
 	};
 
   hexbin.hexagon = function() {
-    return "m" + hexagon(size).join("l") + "z";
+    return "m" + hexagon(size-0.5).join("l") + "z";
   };
 
   hexbin.centers = function() {

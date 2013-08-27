@@ -19,7 +19,7 @@ generateMap=function(size,seed,patchSize,noiseImpact,delta){
 		{
 			var r= i ;
 			var q = j - Math.floor(i/2);
-			mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,heigh:0,moist:0 }
+			mapData[r+"_"+q] = {_id: r+"_"+q, name: r+"_"+q, r:r,q:q,height:0,moist:0 }
 		}
 	}
 	

@@ -28,43 +28,62 @@
 		}
 		var socket = io.connect();
 		socket.on('data', function (data) {
-			console.log('start draw');
-			var margin = {top: 20, right: 20, bottom: 30, left: 40},
+			
+			var margin = {top: 200, right: 20, bottom: 30, left: 200},
 			width = 960 - margin.left - margin.right,
 			height = 500 - margin.top - margin.bottom;
 			
-			
-			
-			var i=0;
-			var points = [];
-			for (hex in data) 
-			  points[i++]=data[hex];
-			
-			var radius = 3;
-
+			var radius = 20;
 			var hexbin = d3.hexbin()
 				.size([width, height])
 				.radius(radius);
-
+			document.oncontextmenu = function() {
+				return false;
+			}
 			var svg = d3.select("body").append("svg")
-				.attr("width", "200%")
-				.attr("height", "200%")
-			  .append("g")
-				.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-			svg.append("g")
-				.selectAll(".hexagon")
-				.data(hexbin(points))
-			  .enter().append("path")
-				.attr("class", "hexagon")
-				.attr("d", function(d) { return hexbin.hexagon(); })
-				.attr("transform", function(d) { return "translate("+ (10+ d.x) + ","+ (10+ d.y) + ")"; })
-				.on("mouseover", function(d){d3.select(this).style("fill", "black");})
-				.on("mouseout", function(d){d3.select(this).style("fill", d.fill);});
-				d3.selectAll('path')
-				.attr('fill', function(d){return d.fill;})
-				.on("click", function(d){alert(d.name+"=>"+d.height+"/"+d.moist);});
-				console.log('end draw');
+				  .append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			function Update(data)
+			{
+				console.log('start update');
+				var i=0;
+				var points = [];
+				for (hex in data) {
+				  points[i++]=data[hex];
+				}
+				
+				var chex=svg.selectAll(".hexagon")
+					.data(hexbin(points), function(d) { return d.name+d.q+d.r; })
+					.attr("class", "old");
+				
+				chex.enter().append("g")
+					.attr("class", "hexagon")
+					.attr("transform", function(d) { return "translate("+ (10+ d.x) + ","+ (10+ d.y) + ")"; })
+					.on("click", function(d){socket.emit('move',{q:d.q,r:d.r});});
+				
+				chex.append("path")
+					.attr("d", function(d) { return hexbin.hexagon(); })
+					.attr('fill', function(d){return d.fill;})
+					.attr('stroke', function(d){return d.stroke;})
+					.attr('stroke-width', function(d){return d.stroke_width;})
+					.on("mouseover", function(d){d3.select(this).style("fill", "black");})
+					.on("mouseout", function(d){d3.select(this).style("fill", d.fill);});
+				
+				chex.append("image")
+					.attr("xlink:href", function(d) {return d.img;})
+					.attr("x", -10)
+					.attr("y", -10)
+					.attr("width", 20)
+					.attr("height", 20);
+					
+				chex.exit().remove();
+				
+				console.log('end update');
+			};
+			Update(data);
+			socket.on('maj', function (data) {
+				Update(data)
+			});
 		  });
 		</script>
 	</head>
