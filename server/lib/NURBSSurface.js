@@ -11,9 +11,10 @@
  *	NURBS surface
  **************************************************************/
 
-NURBSUtils=require('./NURBSUtils.js');
-THREE=require('three');
-exports.NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */) {
+
+(function() {
+require('./NURBSUtils.js');
+global.THREE.NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of reals */, controlPoints /* array^2 of Vector(2|3|4) */) {
 
 	this.degree1 = degree1;
 	this.degree2 = degree2;
@@ -35,16 +36,16 @@ exports.NURBSSurface = function ( degree1, degree2, knots1, knots2 /* arrays of 
 };
 
 
-exports.NURBSSurface.prototype = {
+global.THREE.NURBSSurface.prototype = {
 
-	constructor: exports.NURBSSurface,
+	constructor: global.THREE.NURBSSurface,
 
 	getPoint: function ( t1, t2 ) {
 
 		var u = this.knots1[0] + t1 * (this.knots1[this.knots1.length - 1] - this.knots1[0]); // linear mapping t1->u
 		var v = this.knots2[0] + t2 * (this.knots2[this.knots2.length - 1] - this.knots2[0]); // linear mapping t2->u
 
-		return NURBSUtils.NURBSUtils.calcSurfacePoint(this.degree1, this.degree2, this.knots1, this.knots2, this.controlPoints, u, v);
+		return global.THREE.NURBSUtils.calcSurfacePoint(this.degree1, this.degree2, this.knots1, this.knots2, this.controlPoints, u, v);
 	}
 };
-
+})();

@@ -46,8 +46,8 @@ d3.hexbin = function() {
 				binsById[id].stroke="#F00";
 				binsById[id].stroke_width="2px";
 			}else{
-				binsById[id].stroke="#666";
-				binsById[id].stroke_width="0.3px";
+				binsById[id].stroke="#222";
+				binsById[id].stroke_width="1px";
 			
 			}
 			if(point.height>7)

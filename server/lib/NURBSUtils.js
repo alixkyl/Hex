@@ -11,8 +11,8 @@
  *	NURBS Utils
  **************************************************************/
 
-THREE=require('three');
-exports.NURBSUtils = {
+(function() {
+global.THREE.NURBSUtils = {
 
 	/*
 	Finds knot vector span.
@@ -390,5 +390,5 @@ exports.NURBSUtils = {
 	}
 
 };
-
+})();
 

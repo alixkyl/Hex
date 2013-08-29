@@ -1,18 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
-		<style>
-
-		
-		.hexagon {
-		  
-		  stroke: #000;
-		  stroke-width: 0.3px;
-		}
-
-		</style>
-		
+		<meta charset="utf-8" />
+        <title>Hex</title>
+		<link rel="stylesheet" href="style.css" />
 		<script src="ext_lib/socket.io/socket.io.js"></script>
 		<script src="ext_lib/d3.v3.min.js"></script>
 		<script src="myHex.js"></script>
@@ -28,21 +19,20 @@
 		}
 		var socket = io.connect();
 		socket.on('data', function (data) {
+			var margin = {top: 0, right: 0, bottom: 0, left: 0},
+			width = 400 - margin.left - margin.right,
+			height = 400 - margin.top - margin.bottom;
 			
-			var margin = {top: 200, right: 20, bottom: 30, left: 200},
-			width = 960 - margin.left - margin.right,
-			height = 500 - margin.top - margin.bottom;
-			
-			var radius = 20;
+			var radius = 30;
 			var hexbin = d3.hexbin()
 				.size([width, height])
 				.radius(radius);
 			document.oncontextmenu = function() {
 				return false;
 			}
-			var svg = d3.select("body").append("svg")
-				  .append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			var svg = d3.select("#drawArea")
+				.append("svg")
+			    .append("g");
 			function Update(data)
 			{
 				console.log('start update');
@@ -58,7 +48,7 @@
 				
 				chex.enter().append("g")
 					.attr("class", "hexagon")
-					.attr("transform", function(d) { return "translate("+ (10+ d.x) + ","+ (10+ d.y) + ")"; })
+					.attr("transform", function(d) { return "translate("+ (d.x +width/2) + ","+ (d.y+height/2) + ")"; })
 					.on("click", function(d){socket.emit('move',{q:d.q,r:d.r});});
 				
 				chex.append("path")
@@ -88,6 +78,25 @@
 		</script>
 	</head>
 	<body>
-		
+		<header>
+			<h1>HEX</h1>
+		</header>
+		<nav>
+			<ul>
+				<li><a href="index.html">Accueil</a></li>
+				<li><a href="forum.html">Forum</a></li>
+				<li><a href="contact.html">Contact</a></li>
+			</ul>
+		</nav>
+		<section>
+			<h1>Ma section de page</h1>
+			<article id='drawArea'> </article>
+			<aside>
+				<p>Bla bla bla bla</p>
+			</aside>
+		</section>
+		<footer>
+			<p>FOOT</p>
+		</footer>
     </body>
 </html>

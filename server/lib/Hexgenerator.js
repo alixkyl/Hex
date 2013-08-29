@@ -1,10 +1,11 @@
 var Alea = require('alea')
 	,SimplexNoise = require('simplex-noise')
-	,THREE = require('three')
-	,NURBSSurface=require('./NURBSSurface.js');
+	,THREE = require('three');
 (function() {
+global.THREE=THREE;
+require('./NURBSSurface.js')
 var mapData={};
-generateMap=function(size,seed,patchSize,noiseImpact,delta){
+generateMap=function(size,seed,patchSize,noiseImpact){
 	
 	
 	
@@ -248,7 +249,7 @@ function nurbsGenerator(func){
 	var degree2 = 2;
 	var knots1 = [0, 0, 0, 1, 1, 1];
 	var knots2 = [0, 0, 0, 1, 1, 1];
-	var nurbsSurface = new NURBSSurface.NURBSSurface(degree1, degree2, knots1, knots2, nsControlPoints);
+	var nurbsSurface = new global.THREE.NURBSSurface(degree1, degree2, knots1, knots2, nsControlPoints);
 
 	return getSurfacePoint = function(u, v) {
 		return nurbsSurface.getPoint(u, v);
