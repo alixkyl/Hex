@@ -18,4 +18,4 @@ TODO
 -post generation opération for none dynamic maps(like biomes correction)
 -server side generation
 -adding river
--find detter way for biomes génération
+-find better way for biomes génération
