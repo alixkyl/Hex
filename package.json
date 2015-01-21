@@ -1,7 +1,7 @@
 {
 	"name": "HexMapGenerator",
 	"description": "generate hexmap",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"author": "Julien Prado <julien.prado@gmail.com",
 	"main": "./lib/HexGenerator.js",
 	"dependencies": {
