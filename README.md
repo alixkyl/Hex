@@ -3,7 +3,6 @@
 Generating pseudo random hexmap
 
 ###OPTIONS
-=
 example with default value. if one option is missing, it will use the default value.
 ```
 {
