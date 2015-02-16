@@ -3,10 +3,21 @@ Hex
 
 Generating pseudo random hexmap
 
+OPTIONS
+====
+example with default value. if one option is missing, it will use the default value.
+{
+	width : 100;
+	height : 100;
+	landSea : 0.1;
+	seed : 0;
+	patchSize : 10;
+	noiseImpact : 0.05;
+	degree : 4;
+}
+
 FEATURES
 ====
-
--hexmap rendering with <svg> with d3.js
 -PRNG with alea.js
 -noise with simplex-noise.js
 -shape with NURBS(three.js),layering NURBS of differente size(2^) to produce better shape
