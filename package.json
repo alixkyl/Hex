@@ -1,11 +1,12 @@
 {
-	"name": "HexMapGenerator",
+	"name": "hex_map_generator",
 	"description": "generate hexmap",
 	"version": "0.5.0",
 	"author": "Julien Prado <julien.prado@gmail.com",
-	"main": "./lib/HexGenerator.js",
+	"main": "./dist/main.js",
 	"dependencies": {
-		"alea": "",
-		"simplex-noise": ""
+		"@bluemath/geom": "^0.2.2",
+		"alea": "0.0.9",
+		"simplex-noise": "^2.3.0"
 	}
 }

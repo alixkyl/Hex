@@ -1,9 +1,10 @@
 var fs = require('fs');
-var map = require('./lib/Hexgenerator.js');
-var res = map.generateMap(200,2,25,0.05);
-fs.writeFile('./plop.json', JSON.stringify(res, null, 4), function(err,data){
-if (err){
-	console.log(data);
-	console.log(err);
+var generator = require('./dist/main.js').Generator;
+var generator = new generator({});
+var res = generator.generate();
+fs.writeFile('./test.json', JSON.stringify(res, null, 4), function (err, data) {
+	if (err) {
+		console.log(data);
+		console.log(err);
 	}
 });
