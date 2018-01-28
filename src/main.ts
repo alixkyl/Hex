@@ -23,7 +23,7 @@ export class Generator {
 	private getHeight(hex: Hex) {
 		var w = Math.floor(hex.j / this.PatchWidth);
 		var h = Math.floor(hex.i / this.PatchHeight);
-		var result = this.nurbsGenerator.getNurbsFunction(0, w, h)((hex.j - w * this.PatchWidth) / this.PatchWidth, (hex.i - h * this.PatchHeight) / this.PatchHeight);
+		var result = this.nurbsGenerator.getNurbsFunction(0, w, h, this.PatchWidth)((hex.j - w * this.PatchWidth), (hex.i - h * this.PatchHeight));
 		for (var d = 1; d < this.options.degree; d++) {
 
 			var impact = 1 / Math.pow(2, d);
@@ -33,7 +33,7 @@ export class Generator {
 			w = Math.floor(hex.j / size);
 			h = Math.floor(hex.i / size);
 
-			result += this.nurbsGenerator.getNurbsFunction(d, w, h)((hex.j - w * size) / size, (hex.i - h * size) / size);
+			result += this.nurbsGenerator.getNurbsFunction(d, w, h, size)((hex.j - w * size) , (hex.i - h * size) );
 		}
 		return Math.max(-1, Math.min(1, result));
 	}
@@ -45,8 +45,8 @@ export class Generator {
 			for (var j = 0; j < this.options.width; j++) {
 				hex = new Hex(i, j);
 				var h = this.getHeight(hex);
-				// var variation = this.simplex.noise2D(hex.r,hex.q)*this.options.noiseImpact;
-				hex.height = h/*+variation*/ + this.options.landSea;
+				var variation = this.nurbsGenerator.simplex.noise2D(hex.r,hex.q)*this.options.noiseImpact;
+				hex.height = h+variation + this.options.landSea;
 				hex.altitude = h;
 				mapData.push(hex);
 			}

@@ -4,7 +4,7 @@ import * as SimplexNoise from 'simplex-noise';
 
 export class NurbsGenerator {
 
-    private simplex: SimplexNoise;
+    simplex: SimplexNoise;
     private presetProfile: number[][];
     private nurbs: ((x: number, y: number) => number)[][][];
 
@@ -13,7 +13,7 @@ export class NurbsGenerator {
         this.nurbs = [];
         this.presetProfile = this.generatePresetProfile(profile);
     }
-    nurbsGenerator(x: number, y: number, p: number, func: (x: number, y: number) => number) {
+    nurbsGenerator(x: number, y: number, p: number, size: number, func: (x: number, y: number) => number) {
         var controlPoints = [
             [
                 [0, func(4 * x, 4 * y), 0],
@@ -55,25 +55,25 @@ export class NurbsGenerator {
         var knots = [0, 0, 0, 0, 0.5, 1, 1, 1, 1];
         var degree = 3;
 
-        var nurbsSurface = new nurbs.BSplineSurface(degree, degree, knots, knots, controlPoints);
-
+        var bSplineSurface = new nurbs.BSplineSurface(degree, degree, knots, knots, controlPoints);
+        var nurbsSurface = bSplineSurface.tessellatePoints(size);
         return function (u: number, v: number) {
-            return 4;
+            return nurbsSurface.getN(u,v,1);
         };
     }
 
 	/**
 	*getNurbsFunction
 	*/
-    getNurbsFunction(layer: number, width: number, height: number) {
+    getNurbsFunction(layer: number, width: number, height: number,size:number) {
         if (!this.nurbs[layer]) { this.nurbs[layer] = []; }
         if (!this.nurbs[layer][width]) { this.nurbs[layer][width] = []; }
         if (!this.nurbs[layer][width][height]) {
             if (layer > 0) {
                 var p = Math.pow(2, layer);
-                this.nurbs[layer][width][height] = this.nurbsGenerator(width * p, height * p, p, (x, y) => { return this.simplex.noise2D(x, y) });
+                this.nurbs[layer][width][height] = this.nurbsGenerator(width * p, height * p, p, size, (x, y) => { return this.simplex.noise2D(x, y) });
             } else {
-                this.nurbs[layer][width][height] = this.nurbsGenerator(width, height, 1, (x, y) => { return this.presetProfile[x][y]; })
+                this.nurbs[layer][width][height] = this.nurbsGenerator(width, height, 1, size, (x, y) => { return this.presetProfile[x][y]; })
             }
         }
         return this.nurbs[layer][width][height];
