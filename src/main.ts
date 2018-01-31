@@ -33,7 +33,7 @@ export class Generator {
 			w = Math.floor(hex.j / size);
 			h = Math.floor(hex.i / size);
 
-			result += this.nurbsGenerator.getNurbsFunction(d, w, h, size)((hex.j - w * size) , (hex.i - h * size) );
+			result += this.nurbsGenerator.getNurbsFunction(d, w, h, size)((hex.j - w * size), (hex.i - h * size));
 		}
 		return Math.max(-1, Math.min(1, result));
 	}
@@ -45,8 +45,8 @@ export class Generator {
 			for (var j = 0; j < this.options.width; j++) {
 				hex = new Hex(i, j);
 				var h = this.getHeight(hex);
-				var variation = this.nurbsGenerator.simplex.noise2D(hex.r,hex.q)*this.options.noiseImpact;
-				hex.height = h+variation + this.options.landSea;
+				var variation = this.nurbsGenerator.simplex.noise2D(hex.r, hex.q) * this.options.noiseImpact;
+				hex.height = h + variation + this.options.landSea;
 				hex.altitude = h;
 				mapData.push(hex);
 			}
