@@ -2,34 +2,34 @@ export declare class Options {
     /**
      * seed for PRNG map generation
      */
-    seed: number;
+    seed?: number;
     /**
      * number of Layer
      */
-    depth: number;
+    depth?: number;
     /**
      * Number of Hex per dimension for a patch
      */
-    patchSize: number;
+    patchSize?: number;
     /**
      * Number of patch along X for layer max
      */
-    patchX: number;
+    patchX?: number;
     /**
      * Number of patch along Y for layer max
      */
-    patchY: number;
+    patchY?: number;
     /**
      * Layer max preset
      */
-    profile: number[][][][];
+    profile?: number[][][][];
     /**
      * offset for height
      */
-    landSea: number;
+    landSea?: number;
     /**
      *
      */
-    noiseImpact: number;
+    noiseImpact?: number;
     constructor(options: Options);
 }
