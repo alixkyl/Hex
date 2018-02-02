@@ -41,7 +41,7 @@ exports.profileIsland = [
     [island, island, island, island],
     [island, island, island, island]
 ];
-exports.profile = [
+exports.profileDefault = [
     [cornerLR, cornerLL, island, island],
     [island, cornerUL, island, island],
     [island, island, island, island],

@@ -1,2 +1,2 @@
 export declare let profileIsland: number[][][][];
-export declare let profile: number[][][][];
+export declare let profileDefault: number[][][][];

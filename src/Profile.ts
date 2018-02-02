@@ -39,7 +39,7 @@ export let profileIsland: number[][][][] = [
     [island,island,island,island],
     [island,island,island,island]
 ];
-export let profile: number[][][][] = [ 
+export let profileDefault: number[][][][] = [ 
     [cornerLR,cornerLL,island,island],
     [island,cornerUL,island,island],
     [island,island,island,island],
