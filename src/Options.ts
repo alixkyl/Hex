@@ -1,4 +1,4 @@
-import { profileIsland } from './Profile';
+import { profileIsland, profileDefault } from './Profile';
 
 export class Options {
     /**
@@ -35,18 +35,10 @@ export class Options {
     noiseImpact?: number;
 
     constructor(options: Options) {
-        if (options.profile){
-            this.profile = options.profile;
-            this.depth = Math.ceil(Math.log2(options.profile.length));
-            this.patchX = options.profile[0].length;
-            this.patchY = options.profile.length;
-
-        } else {
-            this.profile = profileIsland;
-            this.depth = options.depth || 0;
-            this.patchX = options.patchX || this.profile[0].length;
-            this.patchY = options.patchY || this.profile.length;
-        }
+        this.profile = options.profile || profileDefault;
+        this.patchX = options.patchX || this.profile[0].length;
+        this.patchY = options.patchY || this.profile.length;
+        this.depth = options.depth || 0;
         this.patchSize = options.patchSize || 30;
         this.landSea = options.landSea || 0;
         this.seed = options.seed || 0;

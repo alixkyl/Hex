@@ -41,39 +41,38 @@ class Layer {
     }
     generateProfile(depth, presetProfile) {
         let profile = [];
-        for (let i = 0; i < depth * 4 + 1; i++) {
-            profile[i] = [];
-            for (let j = 0; j < depth * 4 + 1; j++) {
-                profile[i][j] = this.generateCPoint(i, j, presetProfile);
+        for (let j = 0; j <= depth * 4; j++) {
+            profile[j] = [];
+            for (let i = 0; i <= depth * 4; i++) {
+                profile[j][i] = this.generateCPoint(i, j, presetProfile);
             }
         }
         return profile;
     }
     generateCPoint(i, j, presetProfile) {
         let result = 0;
-        let coef = 1;
-        let u = Math.floor(i / 4);
-        let v = Math.floor(j / 4);
-        let iMod = i % 4;
-        if (i !== 0 && iMod === 0) {
-            u--;
-        }
-        let jMod = j % 4;
-        if (j !== 0 && jMod === 0) {
-            v--;
-        }
-        if (presetProfile && presetProfile.length > u && presetProfile[u].length > v) {
-            result += presetProfile[u][v][iMod][jMod];
-            if (iMod === 0 && presetProfile.length > u + 1) {
-                result += presetProfile[u + 1][v][0][j % 4];
+        let coef = 0;
+        let profileV = Math.floor(j / 4);
+        let profileU = Math.floor(i / 4);
+        if (presetProfile) {
+            if (presetProfile.length > profileV && presetProfile[0].length > profileU) {
+                // patch courant
+                result += presetProfile[profileV][profileU][j % 4][i % 4];
                 coef++;
             }
-            if (jMod === 0 && presetProfile[u].length > v + 1) {
-                result += presetProfile[u][v + 1][iMod][0];
+            // Si on est en bordure droite de profile, on ajoute la dernière colonne de la même ligne du profile a gauche
+            if (i && !(i % 4) && presetProfile.length > profileV) {
+                result += presetProfile[profileV][profileU - 1][j - 4 * profileV][4];
                 coef++;
             }
-            if (iMod === 0 && jMod === 0 && presetProfile.length > u + 1 && presetProfile[u + 1].length > v + 1) {
-                result += presetProfile[u + 1][v + 1][0][0];
+            // Si on est en bordure basse de profile, on ajoute la dernière ligne de la même colonne du profile au dessus
+            if (j && !(j % 4) && presetProfile[0].length > profileU) {
+                result += presetProfile[profileV - 1][profileU][4][i - 4 * profileU];
+                coef++;
+            }
+            // Si on est dans le coin inferieur droit du profile, on ajoute la dernière ligne de la dernière colonne du profile au dessus a gauche
+            if (j && !(j % 4) && i && !(i % 4)) {
+                result += presetProfile[profileV - 1][profileU - 1][4][4];
                 coef++;
             }
             result /= coef;
