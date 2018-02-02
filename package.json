@@ -1,12 +1,12 @@
 {
 	"name": "hexmap-lib",
 	"description": "generate hexmap",
-	"version": "0.5.0",
-	"author": "Julien Prado <julien.prado@gmail.com",
-	"main": "./dist/main.js",
+	"version": "1.0.0",
+	"author": "Julien Prado <julien.prado@gmail.com>",
+	"main": "./dist/index.js",
 	"dependencies": {
 		"@bluemath/geom": "^0.2.2",
-		"alea": "0.0.9",
+		"alea": "^0.0.9",
 		"simplex-noise": "^2.3.0"
 	}
 }

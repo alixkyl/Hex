@@ -4,7 +4,6 @@ export class Hex {
     q: number;
     r: number;
     height: number;
-    altitude: number;
     constructor(i: number, j: number) {
         this.i = i;
         this.j = j;

@@ -1,14 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Profile_1 = require("./Profile");
 class Options {
     constructor(options) {
-        this.width = options.width || 100;
-        this.height = options.height || 100;
+        if (options.profile) {
+            this.profile = options.profile;
+            this.depth = Math.ceil(Math.log2(options.profile.length));
+            this.patchX = options.profile[0].length;
+            this.patchY = options.profile.length;
+        }
+        else {
+            this.profile = Profile_1.profile;
+            this.depth = options.depth || 2;
+            this.patchX = options.patchX || 4;
+            this.patchY = options.patchY || 4;
+        }
+        this.patchSize = options.patchSize || 30;
         this.landSea = options.landSea || 0;
         this.seed = options.seed || 0;
-        this.patchSize = options.patchSize || 30;
         this.noiseImpact = options.noiseImpact || 0;
-        this.degree = options.degree || 3;
     }
 }
 exports.Options = Options;
