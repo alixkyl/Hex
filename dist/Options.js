@@ -11,9 +11,9 @@ class Options {
         }
         else {
             this.profile = Profile_1.profile;
-            this.depth = options.depth || 2;
-            this.patchX = options.patchX || 4;
-            this.patchY = options.patchY || 4;
+            this.depth = options.depth || 0;
+            this.patchX = options.patchX || this.profile[0].length;
+            this.patchY = options.patchY || this.profile.length;
         }
         this.patchSize = options.patchSize || 30;
         this.landSea = options.landSea || 0;

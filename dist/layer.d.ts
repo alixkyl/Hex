@@ -20,9 +20,4 @@ export declare class Layer {
     getUV(u: number, v: number): number;
     private generateProfile(depth, presetProfile);
     private generateCPoint(i, j, presetProfile);
-    /**
-     *
-     * @param profile
-     */
-    private generatePresetProfile(profile);
 }

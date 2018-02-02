@@ -18,18 +18,18 @@ export class Generator {
 		this._mapHeight = this._options.patchSize * this._options.patchY;
 		this._layers = [];
 
+		this._layers.push(new Layer(this._options.patchSize, Math.max(this._options.profile.length, this._options.profile[0].length), this._options.seed, this._options.profile));
 
 		for (let d = 0; d < this._options.depth; d++) {
 			let patchSize = this._options.patchSize * Math.pow(2, this._options.depth - d);
 			this._layers.push(new Layer(patchSize, Math.pow(2, d), this._options.seed));
 		}
-		this._layers.push(new Layer(this._options.patchSize, Math.pow(2, this._options.depth), this._options.seed, this._options.profile));
 	}
 
 	private getUV(u: number, v: number) {
 		return this._layers.reduce((accu, curr,index) => {
 			return accu + curr.getUV(u, v)/ Math.pow(2, index);
-		}, 0)
+		}, 0);
 	}
 
 	private getHeight(hex: Hex) {

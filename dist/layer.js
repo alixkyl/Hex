@@ -54,17 +54,25 @@ class Layer {
         let coef = 1;
         let u = Math.floor(i / 4);
         let v = Math.floor(j / 4);
+        let iMod = i % 4;
+        if (i !== 0 && iMod === 0) {
+            u--;
+        }
+        let jMod = j % 4;
+        if (j !== 0 && jMod === 0) {
+            v--;
+        }
         if (presetProfile && presetProfile.length > u && presetProfile[u].length > v) {
-            result += presetProfile[u][v][i % 4][j % 4];
-            if (i === 4 && presetProfile.length > u + 1) {
+            result += presetProfile[u][v][iMod][jMod];
+            if (iMod === 0 && presetProfile.length > u + 1) {
                 result += presetProfile[u + 1][v][0][j % 4];
                 coef++;
             }
-            if (j === 4 && presetProfile[u].length > v + 1) {
-                result += presetProfile[u][v + 1][i % 4][0];
+            if (jMod === 0 && presetProfile[u].length > v + 1) {
+                result += presetProfile[u][v + 1][iMod][0];
                 coef++;
             }
-            if (i === 4 && j === 4 && presetProfile.length > u + 1 && presetProfile[u + 1].length > v + 1) {
+            if (iMod === 0 && jMod === 0 && presetProfile.length > u + 1 && presetProfile[u + 1].length > v + 1) {
                 result += presetProfile[u + 1][v + 1][0][0];
                 coef++;
             }
@@ -74,39 +82,6 @@ class Layer {
             result += this._simplex.noise2D(i, j);
         }
         return result;
-    }
-    /**
-     *
-     * @param profile
-     */
-    generatePresetProfile(profile) {
-        let coef = [];
-        let presetProfile = [];
-        for (let i = 0; i < profile.length; i++) {
-            for (let j = 0; j < profile[i].length; j++) {
-                let p = profile[j][i];
-                for (let x = 0; x < 5; x++) {
-                    coef[i * 4 + x] = [];
-                    presetProfile[i * 4 + x] = [];
-                    for (let y = 0; y < 5; y++) {
-                        if (!presetProfile[i * 4 + x][j * 4 + y]) {
-                            coef[i * 4 + x][j * 4 + y] = 1;
-                            presetProfile[i * 4 + x][j * 4 + y] = p[y][x];
-                        }
-                        else {
-                            coef[i * 4 + x][j * 4 + y]++;
-                            presetProfile[i * 4 + x][j * 4 + y] += p[y][x];
-                        }
-                    }
-                }
-            }
-        }
-        for (let i = 0; i < coef.length; i++) {
-            for (let j = 0; j < coef[i].length; j++) {
-                presetProfile[i][j] = presetProfile[i][j] / coef[i][j];
-            }
-        }
-        return presetProfile;
     }
 }
 exports.Layer = Layer;
