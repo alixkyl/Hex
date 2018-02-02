@@ -1,4 +1,4 @@
-import { profile } from './Profile';
+import { profileIsland } from './Profile';
 
 export class Options {
     /**
@@ -42,7 +42,7 @@ export class Options {
             this.patchY = options.profile.length;
 
         } else {
-            this.profile = profile;
+            this.profile = profileIsland;
             this.depth = options.depth || 0;
             this.patchX = options.patchX || this.profile[0].length;
             this.patchY = options.patchY || this.profile.length;

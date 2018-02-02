@@ -10,7 +10,7 @@ class Options {
             this.patchY = options.profile.length;
         }
         else {
-            this.profile = Profile_1.profile;
+            this.profile = Profile_1.profileIsland;
             this.depth = options.depth || 0;
             this.patchX = options.patchX || this.profile[0].length;
             this.patchY = options.patchY || this.profile.length;
