@@ -1,4 +1,4 @@
-import { BSplineSurface } from '@bluemath/geom/lib/nurbs';
+import { BSplineSurface } from "@bluemath/geom/lib/nurbs";
 export class Nurb {
     /**
      * constructor
@@ -6,26 +6,28 @@ export class Nurb {
      * @param func function that return the value of a control point
      */
     constructor(func) {
-        this._controlPoints = [];
-        this._knots = [0, 0, 0, 0, 0.5, 1, 1, 1, 1];
-        this._degree = 3;
+        this.controlPoints = [];
+        this.knots = [0, 0, 0, 0, 0.5, 1, 1, 1, 1];
+        this.degree = 3;
         for (let i = 0; i < 5; i++) {
-            this._controlPoints[i] = [];
+            this.controlPoints[i] = [];
             for (let j = 0; j < 5; j++) {
-                this._controlPoints[i][j] = [i, func(i, j), j];
+                this.controlPoints[i][j] = [i, func(i, j), j];
             }
         }
-        let bSplineSurface = new BSplineSurface(this._degree, this._degree, this._knots, this._knots, this._controlPoints);
+        this.bSplineSurface = new BSplineSurface(this.degree, this.degree, this.knots, this.knots, this.controlPoints);
     }
-    ;
     tesselate(resolution) {
-        return new Promise(function (resolve) {
-            let worker = new Worker('./worker');
-            worker.addEventListener('message', result => {
-                this._nurbsSurface = result.data;
+        return new Promise((resolve) => {
+            const worker = new Worker("./worker");
+            worker.addEventListener("message", (result) => {
+                this.nurbsSurface = result.data;
                 resolve();
             });
-            worker.postMessage({ bSplineSurface: this._bSplineSurface, resolution: resolution });
+            worker.postMessage({
+                bSplineSurface: this.bSplineSurface,
+                resolution,
+            });
         });
     }
     /**
@@ -34,8 +36,7 @@ export class Nurb {
      * @param v
      */
     getUV(u, v) {
-        return this._nurbsSurface.getN(u, v, 1);
+        return this.nurbsSurface.getN(u, v, 1);
     }
-    ;
 }
 //# sourceMappingURL=nurb.js.map

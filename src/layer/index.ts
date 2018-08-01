@@ -1,3 +1,3 @@
-export { BaseLayer } from './baselayer';
-export { ProfiledLayer } from './profiledLayer';
-export { NoiseLayer } from './noiseLayer';
+export { IBaseLayer } from "./baselayer";
+export { NoiseLayer } from "./noiseLayer";
+export { ProfiledLayer } from "./profiledLayer";

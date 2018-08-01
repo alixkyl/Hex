@@ -1,46 +1,46 @@
-let island = [
+const island = [
     [-0.5, -0.5, -0.5, -0.5, -0.5],
     [-0.5, 0, 0, 0, -0.5],
     [-0.5, 0, 1, 0, -0.5],
     [-0.5, 0, 0, 0, -0.5],
-    [-0.5, -0.5, -0.5, -0.5, -0.5]
+    [-0.5, -0.5, -0.5, -0.5, -0.5],
 ];
-let cornerLL = [
+const cornerLL = [
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
     [1, 1, -1, -1, -1],
     [1, 1, 1, -1, -1],
-    [1, 1, 1, -1, -1]
+    [1, 1, 1, -1, -1],
 ];
-let cornerUL = [
+const cornerUL = [
     [1, 1, 1, -1, -1],
     [1, 1, 1, -1, -1],
     [1, 1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1]
+    [-1, -1, -1, -1, -1],
 ];
-let cornerLR = [
+const cornerLR = [
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, 1, 1],
     [-1, -1, 1, 1, 1],
-    [-1, -1, 1, 1, 1]
+    [-1, -1, 1, 1, 1],
 ];
-let cornerUR = [
+const cornerUR = [
     [-1, -1, 1, 1, 1],
     [-1, -1, 1, 1, 1],
     [-1, -1, -1, 1, 1],
     [-1, -1, -1, -1, -1],
-    [-1, -1, -1, -1, -1]
+    [-1, -1, -1, -1, -1],
 ];
 export let profileIsland = [
     [island, island, island, island],
     [island, island, island, island],
     [island, island, island, island],
-    [island, island, island, island]
+    [island, island, island, island],
 ];
 export let profileDefault = [
     [cornerLR, cornerLL],
-    [cornerUR, cornerUL]
+    [cornerUR, cornerUL],
 ];
 //# sourceMappingURL=Profile.js.map

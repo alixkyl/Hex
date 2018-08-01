@@ -1,5 +1,5 @@
-import * as Alea from 'alea';
-import * as SimplexNoise from 'simplex-noise';
+import * as Alea from "alea";
+import * as SimplexNoise from "simplex-noise";
 export class NoiseLayer {
     /**
      *
@@ -9,8 +9,8 @@ export class NoiseLayer {
      * @param profile
      */
     constructor(seed, noiseImpact) {
-        this._noiseImpact = noiseImpact;
-        this._simplex = new SimplexNoise(Alea(seed));
+        this.noiseImpact = noiseImpact;
+        this.simplex = new SimplexNoise(Alea(seed));
     }
     /**
      * Retourne la valeur pour les coordonnées U et V du layer
@@ -18,7 +18,7 @@ export class NoiseLayer {
      * @param v
      */
     getUV(u, v) {
-        return this._simplex.noise2D(u * this._noiseImpact, v * this._noiseImpact);
+        return this.simplex.noise2D(u * this.noiseImpact, v * this.noiseImpact);
     }
 }
 //# sourceMappingURL=noiseLayer.js.map

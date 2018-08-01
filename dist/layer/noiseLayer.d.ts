@@ -1,7 +1,7 @@
-import { BaseLayer } from './baseLayer';
-export declare class NoiseLayer implements BaseLayer {
-    private _simplex;
-    private _noiseImpact;
+import { IBaseLayer } from "./baselayer";
+export declare class NoiseLayer implements IBaseLayer {
+    private simplex;
+    private noiseImpact;
     /**
      *
      * @param size

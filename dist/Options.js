@@ -9,5 +9,4 @@ export class Options {
         this.noiseImpact = options.noiseImpact || 0.5;
     }
 }
-;
 //# sourceMappingURL=Options.js.map

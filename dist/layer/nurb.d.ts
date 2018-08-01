@@ -1,9 +1,9 @@
 export declare class Nurb {
-    private _controlPoints;
-    private _knots;
-    private _degree;
-    private _nurbsSurface;
-    private _bSplineSurface;
+    private controlPoints;
+    private knots;
+    private degree;
+    private nurbsSurface;
+    private bSplineSurface;
     /**
      * constructor
      * @param resolution number of point per dimension

@@ -1,3 +1,3 @@
-export { ProfiledLayer } from './profiledLayer';
-export { NoiseLayer } from './noiseLayer';
+export { NoiseLayer } from "./noiseLayer";
+export { ProfiledLayer } from "./profiledLayer";
 //# sourceMappingURL=index.js.map

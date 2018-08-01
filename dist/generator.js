@@ -1,39 +1,37 @@
-import { Hex } from './Hex';
-import { Options } from './Options';
-import { ProfiledLayer, NoiseLayer } from './layer/';
+import { Hex } from "./Hex";
+import { NoiseLayer, ProfiledLayer } from "./layer/";
+import { Options } from "./Options";
 export class Generator {
     constructor(options) {
-        this._layers = [];
-        this._options = new Options(options);
+        this.layers = [];
+        this.options = new Options(options);
     }
-    getUV(u, v) {
-        return this._layers.reduce((accu, curr, index) => {
-            return accu + curr.getUV(u, v) / Math.pow(2, index + 1);
-        }, 0);
-    }
-    generate() {
-        console.log('in', this);
-        if (this._options.profile) {
-            let layer = new ProfiledLayer(this._options.width, this._options.height, this._options.profile);
-            this._layers.push(layer);
-            layer.tesselate();
+    async generate() {
+        if (this.options.profile) {
+            const layer = new ProfiledLayer(this.options.width, this.options.height, this.options.profile);
+            this.layers.push(layer);
+            await layer.tesselate();
         }
         else {
-            this._layers.push(new NoiseLayer(this._options.seed, this._options.noiseImpact * 0.5));
+            this.layers.push(new NoiseLayer(this.options.seed, this.options.noiseImpact * 0.5));
         }
-        for (let d = 1; d <= this._options.depth; d++) {
-            this._layers.push(new NoiseLayer(this._options.seed + d, this._options.noiseImpact * d));
+        for (let d = 1; d <= this.options.depth; d++) {
+            this.layers.push(new NoiseLayer(this.options.seed + d, this.options.noiseImpact * d));
         }
-        let mapData = [];
-        for (let i = 0; i < this._options.width; i++) {
-            for (let j = 0; j < this._options.height; j++) {
+        const mapData = [];
+        for (let i = 0; i < this.options.width; i++) {
+            for (let j = 0; j < this.options.height; j++) {
                 const hex = new Hex(i, j);
-                hex.height = this.getUV(i, j) + this._options.landSea;
+                hex.height = this.getUV(i, j) + this.options.landSea;
                 mapData.push(hex);
             }
         }
         return mapData;
     }
+    getUV(u, v) {
+        return this.layers.reduce((accu, curr, index) => {
+            return accu + curr.getUV(u, v) / Math.pow(2, index + 1);
+        }, 0);
+    }
 }
-;
-//# sourceMappingURL=generator.js.map
+//# sourceMappingURL=Generator.js.map

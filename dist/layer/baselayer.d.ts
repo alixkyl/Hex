@@ -1,4 +1,4 @@
-export interface BaseLayer {
+export interface IBaseLayer {
     /**
      * Retourne la valeur pour les coordonnées U et V du layer
      */
