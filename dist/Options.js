@@ -1,18 +1,13 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const Profile_1 = require("./Profile");
-class Options {
+export class Options {
     constructor(options) {
-        this.profile = options.profile || Profile_1.profileDefault;
-        this.patchX = options.patchX || this.profile[0].length;
-        this.patchY = options.patchY || this.profile.length;
+        this.profile = options.profile;
+        this.width = options.width;
+        this.height = options.height;
         this.depth = options.depth || 0;
-        this.patchSize = options.patchSize || 30;
         this.landSea = options.landSea || 0;
         this.seed = options.seed || 0;
-        this.noiseImpact = options.noiseImpact || 0;
+        this.noiseImpact = options.noiseImpact || 0.5;
     }
 }
-exports.Options = Options;
 ;
 //# sourceMappingURL=Options.js.map

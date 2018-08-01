@@ -7,18 +7,8 @@ export declare class Options {
      * number of Layer
      */
     depth?: number;
-    /**
-     * Number of Hex per dimension for a patch
-     */
-    patchSize?: number;
-    /**
-     * Number of patch along X for layer max
-     */
-    patchX?: number;
-    /**
-     * Number of patch along Y for layer max
-     */
-    patchY?: number;
+    width: number;
+    height: number;
     /**
      * Layer max preset
      */
@@ -28,7 +18,7 @@ export declare class Options {
      */
     landSea?: number;
     /**
-     *
+     * distortion du bruit de génération
      */
     noiseImpact?: number;
     constructor(options: Options);

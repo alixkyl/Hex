@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-class Hex {
+export class Hex {
     constructor(i, j) {
         this.i = i;
         this.j = j;
@@ -8,5 +6,4 @@ class Hex {
         this.q = j - Math.floor(i / 2);
     }
 }
-exports.Hex = Hex;
 //# sourceMappingURL=Hex.js.map

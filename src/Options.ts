@@ -9,18 +9,10 @@ export class Options {
      * number of Layer
      */
     depth?: number;
-    /**
-     * Number of Hex per dimension for a patch
-     */
-    patchSize?: number;
-    /**
-     * Number of patch along X for layer max
-     */
-    patchX?: number;
-    /**
-     * Number of patch along Y for layer max
-     */
-    patchY?: number;
+
+    width: number;
+    height: number;
+
     /**
      * Layer max preset
      */
@@ -30,18 +22,17 @@ export class Options {
      */
     landSea?: number;
     /**
-     * 
+     * distortion du bruit de génération
      */
     noiseImpact?: number;
 
     constructor(options: Options) {
-        this.profile = options.profile || profileDefault;
-        this.patchX = options.patchX || this.profile[0].length;
-        this.patchY = options.patchY || this.profile.length;
+        this.profile = options.profile;
+        this.width = options.width;
+        this.height = options.height;
         this.depth = options.depth || 0;
-        this.patchSize = options.patchSize || 30;
         this.landSea = options.landSea || 0;
         this.seed = options.seed || 0;
-        this.noiseImpact = options.noiseImpact || 0;
+        this.noiseImpact = options.noiseImpact || 0.5;
     }
 };

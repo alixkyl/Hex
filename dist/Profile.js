@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 let island = [
     [-0.5, -0.5, -0.5, -0.5, -0.5],
     [-0.5, 0, 0, 0, -0.5],
@@ -35,13 +33,13 @@ let cornerUR = [
     [-1, -1, -1, -1, -1],
     [-1, -1, -1, -1, -1]
 ];
-exports.profileIsland = [
+export let profileIsland = [
     [island, island, island, island],
     [island, island, island, island],
     [island, island, island, island],
     [island, island, island, island]
 ];
-exports.profileDefault = [
+export let profileDefault = [
     [cornerLR, cornerLL],
     [cornerUR, cornerUL]
 ];

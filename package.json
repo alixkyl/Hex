@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"author": "Julien Prado <julien.prado@gmail.com>",
 	"main": "dist/index.js",
-  	"types": "dist/index.d.ts",
+	"types": "dist/index.d.ts",
 	"dependencies": {
 		"@bluemath/geom": "^0.2.2",
 		"alea": "^0.0.9",
